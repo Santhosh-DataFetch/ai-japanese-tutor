@@ -4,8 +4,10 @@ import { motion, useInView } from 'framer-motion'
 import { useRef, type ReactNode } from 'react'
 import { cn } from '@/lib/utils'
 
-type InViewViewport = Omit<IntersectionObserverInit, 'root'> & {
+type InViewViewport = {
   root?: Element | null
+  rootMargin?: string
+  threshold?: number | number[]
 }
 
 interface ScrollAnimationProps {

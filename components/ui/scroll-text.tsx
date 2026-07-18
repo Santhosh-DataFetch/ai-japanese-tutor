@@ -4,6 +4,18 @@ import { motion } from 'framer-motion'
 import { type ElementType, type HTMLAttributes } from 'react'
 import { cn } from '@/lib/utils'
 
+const motionTagMap = {
+  div: motion.div,
+  span: motion.span,
+  p: motion.p,
+  h1: motion.h1,
+  h2: motion.h2,
+  h3: motion.h3,
+  h4: motion.h4,
+  h5: motion.h5,
+  h6: motion.h6,
+} as const
+
 interface ScrollTextProps extends HTMLAttributes<HTMLDivElement> {
   text: string
   classname?: string
@@ -24,7 +36,7 @@ export default function ScrollText({
   as: Tag = 'div',
   ...props
 }: ScrollTextProps) {
-  const MotionTag = (motion as any)[Tag] || motion.div
+  const MotionTag = (typeof Tag === 'string' && Tag in motionTagMap ? motionTagMap[Tag as keyof typeof motionTagMap] : motion.div)
   const animation = letterAnime
     ? {
         hidden: { opacity: 0, y: 24, filter: 'blur(10px)' },
