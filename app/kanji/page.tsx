@@ -64,21 +64,21 @@ export default function KanjiPage() {
   }
 
   return (
-    <div className="min-h-screen md:ml-20 bg-gradient-to-br from-background via-background to-purple-950/10 px-4 md:px-8 py-8">
+    <div className="flex-1 overflow-y-auto">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="max-w-7xl mx-auto space-y-8"
+        className="p-8 lg:p-12 space-y-8 max-w-7xl"
       >
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: -20 }}
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          className="space-y-6"
+          className="space-y-4"
         >
           <div>
-            <h1 className="text-5xl font-bold text-foreground">Kanji Dictionary</h1>
-            <p className="mt-2 text-lg text-muted-foreground">Master {kanji.length} kanji characters</p>
+            <h1 className="text-6xl lg:text-7xl font-light">Kanji</h1>
+            <p className="mt-2 text-lg text-muted-foreground font-light">Master {kanji.length} characters</p>
           </div>
 
           {/* Search Bar */}
@@ -86,30 +86,26 @@ export default function KanjiPage() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.1 }}
-            className="relative"
+            className="flex items-center gap-3 px-5 py-3.5 rounded-2xl border border-border bg-card max-w-md"
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-accent/20 to-purple-600/20 rounded-2xl blur-2xl -z-10" />
-
-            <div className="relative flex items-center gap-3 px-4 py-3 rounded-2xl border border-white/10 backdrop-blur-xl bg-gradient-to-br from-white/5 to-white/[0.02] hover:border-white/20 transition-all duration-300 focus-within:ring-2 focus-within:ring-primary/50">
-              <Search className="w-5 h-5 text-muted-foreground flex-shrink-0" />
-              <input
-                type="text"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search kanji, meaning, or reading..."
-                className="flex-1 bg-transparent text-foreground placeholder-muted-foreground outline-none"
-              />
-              {search && (
-                <motion.button
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  onClick={() => setSearch('')}
-                  className="text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  ✕
-                </motion.button>
-              )}
-            </div>
+            <Search className="w-5 h-5 text-muted-foreground flex-shrink-0" />
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search..."
+              className="flex-1 bg-transparent text-foreground placeholder-muted-foreground outline-none text-base"
+            />
+            {search && (
+              <motion.button
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                onClick={() => setSearch('')}
+                className="text-muted-foreground hover:text-foreground transition-colors"
+              >
+                ✕
+              </motion.button>
+            )}
           </motion.div>
 
           {/* Results Counter */}
@@ -119,9 +115,9 @@ export default function KanjiPage() {
             transition={{ delay: 0.15 }}
             className="flex items-center gap-2 text-sm text-muted-foreground"
           >
-            <Sparkles className="w-4 h-4 text-accent" />
+            <Sparkles className="w-4 h-4 text-primary" />
             <span>
-              Found <span className="font-semibold text-foreground">{filtered.length}</span> kanji
+              <span className="font-medium text-foreground">{filtered.length}</span> results
             </span>
           </motion.div>
         </motion.div>
@@ -131,12 +127,12 @@ export default function KanjiPage() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="flex items-center justify-center py-16"
+            className="flex items-center justify-center py-24"
           >
             <motion.div
               animate={{ rotate: 360 }}
               transition={{ duration: 2, repeat: Infinity }}
-              className="w-8 h-8 border-2 border-primary border-t-accent rounded-full"
+              className="w-8 h-8 border-2 border-border border-t-primary rounded-full"
             />
           </motion.div>
         ) : filtered.length > 0 ? (
@@ -144,35 +140,52 @@ export default function KanjiPage() {
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3"
+            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
           >
             {filtered.map((k) => (
               <Link key={k.id} href={`/kanji/${encodeURIComponent(k.kanji)}`}>
                 <motion.div
                   variants={itemVariants}
-                  whileHover={{ scale: 1.08, y: -4 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="group relative h-24 cursor-pointer"
+                  whileHover={{ y: -4 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="bg-card border border-border rounded-2xl p-6 cursor-pointer group hover:border-border/60 transition-all"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity blur-lg" />
+                  {/* Kanji Character */}
+                  <div className="mb-4">
+                    <p className="text-7xl font-light text-primary text-center">{k.kanji}</p>
+                  </div>
 
-                  <div className="relative h-full rounded-xl p-2 border border-white/10 backdrop-blur-xl bg-gradient-to-br from-white/5 to-white/[0.02] hover:border-white/20 transition-all duration-300 flex flex-col items-center justify-center group-hover:shadow-lg group-hover:shadow-primary/20">
-                    <motion.p
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.1 }}
-                      className="text-4xl font-bold text-foreground text-center"
-                    >
-                      {k.kanji}
-                    </motion.p>
-                    <motion.p
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.15 }}
-                      className="text-xs text-muted-foreground mt-1 line-clamp-1 text-center"
-                    >
-                      {k.meaning}
-                    </motion.p>
+                  {/* Meaning */}
+                  <p className="text-center text-base font-medium mb-4 text-foreground">{k.meaning}</p>
+
+                  {/* Readings */}
+                  <div className="space-y-2 text-sm mb-4">
+                    {k.onyomi && (
+                      <div>
+                        <p className="text-xs text-muted-foreground uppercase tracking-wider">Onyomi</p>
+                        <p className="text-foreground">{k.onyomi}</p>
+                      </div>
+                    )}
+                    {k.kunyomi && (
+                      <div>
+                        <p className="text-xs text-muted-foreground uppercase tracking-wider">Kunyomi</p>
+                        <p className="text-foreground">{k.kunyomi}</p>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Metadata */}
+                  <div className="flex items-center justify-between gap-2 pt-4 border-t border-border text-xs">
+                    {k.jlpt && (
+                      <div className="px-3 py-1.5 rounded-lg bg-primary/10 text-primary font-medium">
+                        N{k.jlpt}
+                      </div>
+                    )}
+                    {k.stroke_count && (
+                      <div className="text-muted-foreground">
+                        {k.stroke_count} strokes
+                      </div>
+                    )}
                   </div>
                 </motion.div>
               </Link>
@@ -180,15 +193,11 @@ export default function KanjiPage() {
           </motion.div>
         ) : (
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
+            initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="text-center py-16"
+            className="text-center py-20"
           >
-            <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-white/5 border border-white/10 flex items-center justify-center">
-              <span className="text-4xl">🔍</span>
-            </div>
-            <h3 className="text-2xl font-bold text-foreground">No kanji found</h3>
-            <p className="mt-2 text-muted-foreground">Try a different search term</p>
+            <p className="text-lg text-muted-foreground font-light">No kanji found</p>
           </motion.div>
         )}
       </motion.div>
