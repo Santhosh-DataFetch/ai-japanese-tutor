@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from 'framer-motion'
-import { type HTMLAttributes } from 'react'
+import { type ElementType, type HTMLAttributes } from 'react'
 import { cn } from '@/lib/utils'
 
 interface ScrollTextProps extends HTMLAttributes<HTMLDivElement> {
@@ -11,7 +11,7 @@ interface ScrollTextProps extends HTMLAttributes<HTMLDivElement> {
   lineAnime?: boolean
   direction?: 'left' | 'right' | 'down'
   variants?: any
-  as?: keyof JSX.IntrinsicElements
+  as?: ElementType
 }
 
 export default function ScrollText({

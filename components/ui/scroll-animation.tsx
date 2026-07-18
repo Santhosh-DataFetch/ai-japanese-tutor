@@ -4,15 +4,19 @@ import { motion, useInView } from 'framer-motion'
 import { useRef, type ReactNode } from 'react'
 import { cn } from '@/lib/utils'
 
+type InViewViewport = Omit<IntersectionObserverInit, 'root'> & {
+  root?: Element | null
+}
+
 interface ScrollAnimationProps {
   children: ReactNode
   className?: string
-  viewport?: IntersectionObserverInit
+  viewport?: InViewViewport
 }
 
 export function ScrollAnimation({ children, className, viewport }: ScrollAnimationProps) {
   const ref = useRef<HTMLDivElement | null>(null)
-  const inView = useInView(ref, { margin: '0px 0px -10% 0px', amount: 0.4, ...viewport })
+  const inView = useInView(ref, { margin: '0px 0px -10% 0px', amount: 0.4, ...(viewport ?? {}) })
 
   return (
     <motion.div

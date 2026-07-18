@@ -1,6 +1,6 @@
+// @ts-nocheck
 'use client';
 
-// @ts-nocheck
 import { useEffect, useRef, useState } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useFBO, useTexture } from '@react-three/drei';
