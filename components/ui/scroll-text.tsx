@@ -33,14 +33,8 @@ export default function ScrollText({
       }
 
   return (
-    <motion.div
-      initial="hidden"
-      animate="visible"
-      variants={variants ?? animation}
-      className={cn(classname)}
-      {...props}
-    >
+    <div className={cn(classname)} {...props}>
       {text}
-    </motion.div>
+    </div>
   )
 }

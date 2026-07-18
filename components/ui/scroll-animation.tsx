@@ -21,7 +21,6 @@ export function ScrollAnimation({ children, className, viewport }: ScrollAnimati
   const inView = useInView(ref, {
     margin: '0px 0px -10% 0px',
     amount: 0.4,
-    root: viewport?.root ?? undefined,
     rootMargin: viewport?.rootMargin,
     threshold: viewport?.threshold,
   })
