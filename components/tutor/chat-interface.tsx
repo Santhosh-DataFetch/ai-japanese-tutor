@@ -102,62 +102,64 @@ export function ChatInterface({ userId, sessionId }: ChatInterfaceProps) {
   }
 
   return (
-    <div className='flex h-full flex-col'>
+    <div className='flex h-full flex-col bg-background'>
       {/* Messages Container */}
       <div
         ref={chatRef}
-        className='flex-1 space-y-4 overflow-y-auto px-4 py-6 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:bg-white/20 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent'
+        className='flex-1 overflow-y-auto p-8 space-y-6 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:bg-primary/20 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent'
       >
         <AnimatePresence mode='wait'>
           {messages.length === 0 && !loading ? (
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
-              className='flex h-full flex-col items-center justify-center space-y-4 text-center'
+              className='flex h-full flex-col items-center justify-center space-y-6 text-center py-20'
             >
-              <div className='p-4 rounded-2xl bg-gradient-to-br from-primary/20 to-accent/20'>
-                <Sparkles className='w-8 h-8 text-accent' />
-              </div>
-              <div>
-                <h3 className='text-xl font-semibold text-foreground'>Start a conversation</h3>
-                <p className='mt-2 text-sm text-muted-foreground'>Ask about grammar, vocabulary, or practice your conversation skills</p>
+              <motion.div className='p-6 rounded-2xl bg-primary/10'>
+                <Sparkles className='w-12 h-12 text-primary' />
+              </motion.div>
+              <div className='space-y-2 max-w-sm'>
+                <h3 className='text-2xl font-light text-foreground'>Start a conversation</h3>
+                <p className='text-base text-muted-foreground font-light'>
+                  Ask about grammar, vocabulary, or practice speaking Japanese
+                </p>
               </div>
             </motion.div>
           ) : (
-            <div className='space-y-4'>
+            <div className='space-y-6 max-w-4xl mx-auto'>
               {messages.map((msg, idx) => (
                 <motion.div
                   key={idx}
-                  initial={{ opacity: 0, y: 10 }}
+                  initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3 }}
+                  transition={{ duration: 0.4 }}
                   className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
-                  <div
-                    className={`max-w-xs lg:max-w-md px-4 py-3 rounded-2xl ${
-                      msg.role === 'user'
-                        ? 'bg-gradient-to-br from-primary to-accent text-white rounded-br-none'
-                        : 'bg-white/10 border border-white/20 text-foreground rounded-bl-none'
-                    }`}
-                  >
-                    <p className='text-sm leading-relaxed'>{msg.text}</p>
-                  </div>
+                  {msg.role === 'user' ? (
+                    <div className='bg-primary text-primary-foreground rounded-2xl px-6 py-4 max-w-2xl shadow-md'>
+                      <p className='text-base leading-relaxed'>{msg.text}</p>
+                    </div>
+                  ) : (
+                    <div className='bg-card border border-border rounded-2xl px-6 py-4 max-w-2xl'>
+                      <p className='text-base leading-relaxed text-foreground'>{msg.text}</p>
+                    </div>
+                  )}
                 </motion.div>
               ))}
 
               {loading && (
                 <motion.div
-                  initial={{ opacity: 0, y: 10 }}
+                  initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   className='flex justify-start'
                 >
-                  <div className='bg-white/10 border border-white/20 px-4 py-3 rounded-2xl rounded-bl-none'>
+                  <div className='bg-card border border-border rounded-2xl px-6 py-4'>
                     <div className='flex items-center gap-2'>
                       <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity }}>
-                        <Loader className='w-4 h-4 text-accent' />
+                        <Loader className='w-5 h-5 text-primary' />
                       </motion.div>
-                      <span className='text-sm text-muted-foreground'>Thinking...</span>
+                      <span className='text-base text-muted-foreground'>Thinking...</span>
                     </div>
                   </div>
                 </motion.div>
@@ -165,11 +167,11 @@ export function ChatInterface({ userId, sessionId }: ChatInterfaceProps) {
 
               {error && (
                 <motion.div
-                  initial={{ opacity: 0, y: 10 }}
+                  initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className='rounded-lg bg-destructive/20 p-3 text-sm text-destructive'
+                  className='rounded-2xl bg-destructive/10 p-4 text-destructive'
                 >
-                  {error}
+                  <p className='text-sm'>{error}</p>
                 </motion.div>
               )}
 
@@ -187,41 +189,40 @@ export function ChatInterface({ userId, sessionId }: ChatInterfaceProps) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
             onClick={() => messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })}
-            className='mx-auto mb-4 p-2 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 transition-all'
+            className='mx-auto mb-4 p-2.5 rounded-full bg-card border border-border hover:border-primary/50 transition-all'
           >
-            <ChevronDown className='w-5 h-5 text-accent' />
+            <ChevronDown className='w-5 h-5 text-primary' />
           </motion.button>
         )}
       </AnimatePresence>
 
-      {/* Input Area */}
-      <motion.form
-        onSubmit={onSubmit}
+      {/* Input Area - Sticky Composer */}
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className='border-t border-white/10 bg-gradient-to-t from-background to-transparent p-4'
+        className='border-t border-border bg-background p-6'
       >
-        <div className='flex gap-3'>
+        <form onSubmit={onSubmit} className='max-w-4xl mx-auto flex gap-3'>
           <input
             ref={inputRef}
             type='text'
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder='Type your message... (or ask in Japanese!)'
+            placeholder='Message...'
             disabled={loading}
-            className='flex-1 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-foreground placeholder-muted-foreground outline-none transition-all backdrop-blur-sm hover:border-white/20 focus:border-primary/50 focus:ring-1 focus:ring-primary/30 disabled:opacity-50'
+            className='flex-1 rounded-2xl border border-border bg-card px-6 py-3.5 text-foreground placeholder-muted-foreground outline-none transition-all hover:border-primary/30 focus:border-primary/60 focus:ring-1 focus:ring-primary/20 disabled:opacity-50 disabled:cursor-not-allowed text-base'
           />
           <motion.button
             type='submit'
             disabled={loading || !input.trim()}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className='p-3 rounded-2xl bg-gradient-to-r from-primary to-accent text-white hover:shadow-lg hover:shadow-primary/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed'
+            className='p-3.5 rounded-2xl bg-primary text-primary-foreground hover:shadow-lg hover:shadow-primary/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed'
           >
             <Send className='w-5 h-5' />
           </motion.button>
-        </div>
-      </motion.form>
+        </form>
+      </motion.div>
     </div>
   )
 }
