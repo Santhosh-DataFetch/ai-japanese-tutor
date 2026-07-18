@@ -9,9 +9,11 @@ import {
   Flame,
   Zap,
   ArrowRight,
+  BarChart3,
+  MessageSquare,
+  TrendingUp,
 } from "lucide-react";
-
-
+import type { Variants } from "framer-motion";
 
 interface DashboardStats {
   streak: number;
@@ -25,391 +27,309 @@ interface Props {
   stats: DashboardStats;
 }
 
-import type { Variants } from "framer-motion";
-
 const containerVariants = {
-  hidden: {
-    opacity: 0,
-  },
+  hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: {
-      staggerChildren: 0.08,
-      delayChildren: 0.1,
-    },
+    transition: { staggerChildren: 0.1, delayChildren: 0.2 },
   },
 } satisfies Variants;
 
 const itemVariants = {
-  hidden: {
-    opacity: 0,
-    y: 20,
-  },
-
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.5,
-    },
-  },
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
 } satisfies Variants;
 
-export default function DashboardClient({
-  stats,
-}: Props) {
-  const cards = [
-    {
-      title: "Daily Streak",
-      value: `${stats.streak} Days`,
-      icon: Flame,
-      color: "#f97316",
-    },
+export default function DashboardClient({ stats }: Props) {
+  const statCards = [
+    { label: "Streak", value: stats.streak, unit: "days", icon: Flame, color: "from-orange-600 to-red-600" },
+    { label: "XP Earned", value: Math.floor(stats.xp / 1000), unit: "k", icon: Zap, color: "from-yellow-600 to-orange-600" },
+    { label: "Vocabulary", value: stats.vocabulary, unit: "words", icon: BookOpen, color: "from-blue-600 to-cyan-600" },
+    { label: "Kanji", value: stats.kanji, unit: "learned", icon: Brain, color: "from-purple-600 to-pink-600" },
+  ];
 
-    {
-      title: "Total XP",
-      value: stats.xp.toLocaleString(),
-      icon: Zap,
-      color: "#eab308",
-    },
-
-    {
-      title: "Vocabulary",
-      value: stats.vocabulary.toString(),
-      icon: BookOpen,
-      color: "#06b6d4",
-    },
-
-    {
-      title: "Kanji",
-      value: stats.kanji.toString(),
-      icon: Brain,
-      color: "#8b5cf6",
-    },
+  const quickActions = [
+    { href: "/review", label: "Start Review", icon: Flame, color: "primary", desc: `${stats.due} due` },
+    { href: "/tutor", label: "Chat with AI", icon: MessageSquare, color: "accent", desc: "Practice now" },
+    { href: "/vocabulary", label: "Browse", icon: BookOpen, color: "secondary", desc: "Add more" },
   ];
 
   return (
-    <div className="space-y-8 max-w-7xl mx-auto">
-
-      {/* Header */}
-
+    <div className="min-h-screen md:ml-20 bg-gradient-to-br from-background via-background to-purple-950/10 px-4 md:px-8 py-8">
       <motion.div
-        initial={{
-          opacity: 0,
-          y: 20,
-        }}
-        animate={{
-          opacity: 1,
-          y: 0,
-        }}
-        transition={{
-          duration: 0.5,
-        }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="max-w-7xl mx-auto space-y-12"
       >
-        <h1 className="text-5xl font-bold bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
-          Welcome Back 👋
-        </h1>
-
-        <p className="mt-3 text-muted-foreground text-base font-medium">
-          Continue your Japanese journey.
-        </p>
-
-      </motion.div>
-
-      {/* Statistics */}
-
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-        className="grid gap-4 md:grid-cols-2 xl:grid-cols-4"
-      >
-
-        {cards.map((card) => (
+        {/* Hero Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="relative"
+        >
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-accent/20 to-purple-600/20 rounded-4xl blur-3xl -z-10" />
+          
           <motion.div
-            key={card.title}
-            variants={itemVariants}
-            className="premium-card group cursor-pointer"
-            whileHover={{ y: -4 }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.1, duration: 0.6 }}
+            className="relative rounded-4xl p-8 md:p-12 border border-white/10 backdrop-blur-xl bg-gradient-to-br from-white/5 to-white/[0.02] overflow-hidden"
           >
+            {/* Animated background elements */}
+            <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-primary/20 to-accent/20 rounded-full blur-3xl -z-10 -translate-y-1/2 translate-x-1/2" />
 
-            <div className="flex items-center justify-between gap-4">
-
-              <div className="flex-1">
-
-                <p className="text-xs uppercase tracking-wide text-muted-foreground font-semibold">
-                  {card.title}
-                </p>
-
-                <h2 className="mt-2 text-3xl font-bold bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
-                  {card.value}
-                </h2>
-
-              </div>
-
-              <motion.div
-                className="rounded-2xl p-3 flex-shrink-0"
-                style={{
-                  backgroundColor: `${card.color}20`,
-                }}
-                whileHover={{ scale: 1.1 }}
-                transition={{ duration: 0.2 }}
+            <div className="relative z-10">
+              <motion.h1
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-foreground via-primary to-accent bg-clip-text text-transparent"
               >
-                <card.icon
-                  className="h-6 w-6"
-                  style={{
-                    color: card.color,
-                  }}
-                />
+                Welcome back
+              </motion.h1>
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.3 }}
+                className="mt-4 text-lg text-muted-foreground"
+              >
+                Continue your Japanese learning journey. You're on a {stats.streak} day streak!
+              </motion.p>
+
+              {/* Animated XP Counter */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.4, type: "spring", stiffness: 100 }}
+                className="mt-8 inline-block"
+              >
+                <div className="p-6 rounded-2xl bg-gradient-to-br from-primary/20 to-accent/20 border border-primary/30 backdrop-blur-sm">
+                  <div className="flex items-center gap-3">
+                    <motion.div
+                      animate={{ scale: [1, 1.2, 1] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                      className="p-3 rounded-xl bg-gradient-to-br from-yellow-600 to-orange-600"
+                    >
+                      <Zap className="w-6 h-6 text-white" />
+                    </motion.div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">Total XP</p>
+                      <p className="text-3xl font-bold text-white">{(stats.xp / 1000).toFixed(1)}k</p>
+                    </div>
+                  </div>
+                </div>
               </motion.div>
-
             </div>
-
           </motion.div>
-        ))}
-
-      </motion.div>
-            {/* Quick Actions */}
-
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-        className="grid gap-6 lg:grid-cols-3"
-      >
-
-            {/* Continue Review */}
-
-        <motion.div
-          variants={itemVariants}
-          className="premium-card flex flex-col justify-between group hover:border-primary/40"
-          whileHover={{ y: -4 }}
-        >
-
-          <div>
-
-            <h2 className="text-xl font-semibold">
-              Continue Review
-            </h2>
-
-            <p className="mt-2 text-muted-foreground">
-              You have
-              <span className="mx-2 font-bold text-primary">
-                {stats.due}
-              </span>
-              cards due.
-            </p>
-
-          </div>
-
-          <Link href="/review" className="w-full">
-
-            <Button className="mt-8 w-full group-hover:shadow-lg group-hover:shadow-primary/20 transition-all duration-200">
-
-              Review Now
-
-              <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-
-            </Button>
-
-          </Link>
-
         </motion.div>
 
-        {/* AI Tutor */}
-
+        {/* Stat Cards Bento Grid */}
         <motion.div
-          variants={itemVariants}
-          className="premium-card flex flex-col justify-between group hover:border-accent/40"
-          whileHover={{ y: -4 }}
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
         >
-
-          <div>
-
-            <h2 className="text-xl font-semibold">
-              AI Tutor
-            </h2>
-
-            <p className="mt-2 text-muted-foreground">
-              Ask questions, practice grammar,
-              and improve your Japanese.
-            </p>
-
-          </div>
-
-          <Link href="/tutor" className="w-full">
-
-            <Button
-              variant="secondary"
-              className="mt-8 w-full group-hover:shadow-lg group-hover:shadow-accent/20 transition-all duration-200"
-            >
-              Open Tutor
-            </Button>
-
-          </Link>
-
-        </motion.div>
-
-        {/* Vocabulary */}
-
-        <motion.div
-          variants={itemVariants}
-          className="premium-card flex flex-col justify-between group hover:border-primary/40"
-          whileHover={{ y: -4 }}
-        >
-
-          <div>
-
-            <h2 className="text-xl font-semibold">
-              Vocabulary
-            </h2>
-
-            <p className="mt-2 text-muted-foreground">
-              Browse and manage your
-              vocabulary collection.
-            </p>
-
-          </div>
-
-          <Link href="/vocabulary" className="w-full">
-
-            <Button
-              variant="secondary"
-              className="mt-8 w-full group-hover:shadow-lg group-hover:shadow-accent/20 transition-all duration-200"
-            >
-              Open Vocabulary
-            </Button>
-
-          </Link>
-
-        </motion.div>
-
-      </motion.div>
-
-      {/* Learning Modules */}
-
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-      >
-
-        <h2 className="mb-6 text-2xl font-bold">
-          Learning Modules
-        </h2>
-
-        <div className="grid gap-5 md:grid-cols-3">
-
-          {[
-            {
-              title: "Kanji",
-              href: "/kanji",
-              icon: Brain,
-            },
-            {
-              title: "Vocabulary",
-              href: "/vocabulary",
-              icon: BookOpen,
-            },
-            {
-              title: "AI Tutor",
-              href: "/tutor",
-              icon: Zap,
-            },
-          ].map((module) => (
-
-            <motion.div
-              key={module.title}
-              variants={itemVariants}
-            >
-
-              <Link href={module.href}>
-
-                <motion.div 
-                  className="premium-card cursor-pointer group"
-                  whileHover={{ y: -4, borderColor: 'var(--color-accent)' }}
-                  transition={{ duration: 0.2 }}
-                >
-
-                  <motion.div
-                    whileHover={{ scale: 1.2, rotate: 5 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <module.icon className="mb-4 h-8 w-8 text-primary" />
+          {statCards.map((stat, idx) => {
+            const Icon = stat.icon;
+            return (
+              <motion.div
+                key={stat.label}
+                variants={itemVariants}
+                whileHover={{ y: -8 }}
+                className="relative group"
+              >
+                <div className={`absolute inset-0 bg-gradient-to-br ${stat.color} rounded-2xl blur-xl opacity-20 group-hover:opacity-30 transition-opacity`} />
+                <div className="relative rounded-2xl p-6 border border-white/10 backdrop-blur-xl bg-gradient-to-br from-white/5 to-white/[0.02] hover:border-white/20 transition-all duration-300">
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <p className="text-sm text-muted-foreground font-medium">{stat.label}</p>
+                      <p className="mt-2 text-4xl font-bold text-foreground">{stat.value}</p>
+                      <p className="mt-1 text-xs text-muted-foreground">{stat.unit}</p>
+                    </div>
+                    <div className={`p-3 rounded-lg bg-gradient-to-br ${stat.color} text-white`}>
+                      <Icon className="w-5 h-5" />
+                    </div>
+                  </div>
+                  
+                  {/* Trend line */}
+                  <motion.div className="mt-4 flex items-end gap-1 h-8">
+                    {[...Array(5)].map((_, i) => (
+                      <motion.div
+                        key={i}
+                        initial={{ height: 0 }}
+                        animate={{ height: `${20 + i * 15}%` }}
+                        transition={{ delay: 0.3 + i * 0.1, duration: 0.6 }}
+                        className={`flex-1 rounded-sm bg-gradient-to-t ${stat.color}`}
+                      />
+                    ))}
                   </motion.div>
+                </div>
+              </motion.div>
+            );
+          })}
+        </motion.div>
 
-                  <h3 className="text-lg font-semibold">
-                    {module.title}
-                  </h3>
+        {/* Quick Actions */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="grid grid-cols-1 md:grid-cols-3 gap-4"
+        >
+          {quickActions.map((action, idx) => {
+            const Icon = action.icon;
+            const isReview = action.href === "/review";
+            return (
+              <motion.div
+                key={action.href}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.7 + idx * 0.1 }}
+                whileHover={{ scale: 1.02 }}
+              >
+                <Link href={action.href}>
+                  <div className="group relative rounded-2xl p-6 border border-white/10 backdrop-blur-xl bg-gradient-to-br from-white/5 to-white/[0.02] hover:border-white/20 transition-all duration-300 cursor-pointer overflow-hidden">
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-br from-primary/10 to-accent/10" />
+                    
+                    <div className="relative z-10">
+                      <div className="flex items-start justify-between mb-4">
+                        <div className={`p-3 rounded-lg bg-gradient-to-br ${
+                          isReview ? 'from-orange-600 to-red-600' : 'from-purple-600 to-pink-600'
+                        } text-white`}>
+                          <Icon className="w-5 h-5" />
+                        </div>
+                        <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:translate-x-1 transition-transform" />
+                      </div>
+                      <h3 className="font-semibold text-foreground">{action.label}</h3>
+                      <p className="text-sm text-muted-foreground mt-1">{action.desc}</p>
+                    </div>
+                  </div>
+                </Link>
+              </motion.div>
+            );
+          })}
+        </motion.div>
 
-                  <p className="mt-2 text-sm text-muted-foreground">
-                    Continue learning.
-                  </p>
-
-                </motion.div>
-
-              </Link>
-
-            </motion.div>
-
-          ))}
-
-        </div>
-
-      </motion.div>
-            {/* Today's Challenge */}
-
-      <motion.div
-        variants={itemVariants}
-        initial="hidden"
-        animate="visible"
-        transition={{ delay: 0.4 }}
-        className="premium-card"
-        whileHover={{ y: -2 }}
-      >
-        <div className="flex flex-col gap-4">
-
-          <div>
-            <h2 className="text-2xl font-bold">
-              Today's Challenge
-            </h2>
-
-            <p className="mt-2 text-sm text-muted-foreground">
-              Complete all of today's reviews to keep your streak alive.
-            </p>
+        {/* Activity Timeline */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8 }}
+          className="rounded-2xl p-8 border border-white/10 backdrop-blur-xl bg-gradient-to-br from-white/5 to-white/[0.02]"
+        >
+          <h2 className="text-2xl font-bold text-foreground mb-6">Weekly Activity</h2>
+          
+          <div className="space-y-4">
+            {[
+              { day: "Mon", activity: 320, goal: 500 },
+              { day: "Tue", activity: 480, goal: 500 },
+              { day: "Wed", activity: 290, goal: 500 },
+              { day: "Thu", activity: 410, goal: 500 },
+              { day: "Fri", activity: 500, goal: 500 },
+              { day: "Sat", activity: 200, goal: 500 },
+              { day: "Sun", activity: 150, goal: 500 },
+            ].map((item, idx) => (
+              <motion.div
+                key={item.day}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.9 + idx * 0.05 }}
+                className="flex items-center gap-4"
+              >
+                <p className="w-12 text-sm font-medium text-muted-foreground">{item.day}</p>
+                <div className="flex-1 bg-white/5 rounded-lg h-8 overflow-hidden border border-white/10">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${(item.activity / item.goal) * 100}%` }}
+                    transition={{ delay: 1 + idx * 0.05, duration: 0.8 }}
+                    className={`h-full bg-gradient-to-r ${
+                      item.activity >= item.goal
+                        ? 'from-green-600 to-emerald-600'
+                        : 'from-primary to-accent'
+                    } rounded-lg`}
+                  />
+                </div>
+                <p className="w-16 text-right text-sm font-medium text-foreground">{item.activity}</p>
+              </motion.div>
+            ))}
           </div>
+        </motion.div>
 
-          <div className="h-2 overflow-hidden rounded-full bg-muted/50">
+        {/* Stats Breakdown */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1 }}
+          className="grid grid-cols-1 md:grid-cols-2 gap-4"
+        >
+          {/* Review Status */}
+          <div className="rounded-2xl p-8 border border-white/10 backdrop-blur-xl bg-gradient-to-br from-white/5 to-white/[0.02]">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-bold text-foreground">Review Status</h3>
+              <div className="p-2 rounded-lg bg-red-600/20">
+                <Flame className="w-5 h-5 text-red-400" />
+              </div>
+            </div>
+            <p className="text-4xl font-bold text-foreground">{stats.due}</p>
+            <p className="text-sm text-muted-foreground mt-2">cards due today</p>
             <motion.div
-              initial={{ width: 0 }}
-              animate={{
-                width:
-                  stats.due === 0
-                    ? "100%"
-                    : `${((50 - Math.min(stats.due, 50)) / 50) * 100}%`,
-              }}
-              transition={{
-                duration: 1,
-              }}
-              className="h-full rounded-full bg-gradient-to-r from-primary to-accent"
-            />
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.1 }}
+              className="mt-6"
+            >
+              <Link href="/review">
+                <Button className="w-full gap-2">
+                  Review Now
+                  <ArrowRight className="w-4 h-4" />
+                </Button>
+              </Link>
+            </motion.div>
           </div>
 
-          <motion.p 
-            className="text-sm font-medium text-muted-foreground"
-            key={stats.due}
-            initial={{ opacity: 0.5 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.3 }}
-          >
-            {stats.due === 0
-              ? "✨ Amazing! You're caught up."
-              : `${stats.due} review card${stats.due !== 1 ? 's' : ''} remaining`}
-          </motion.p>
-
-        </div>
+          {/* Learning Stats */}
+          <div className="rounded-2xl p-8 border border-white/10 backdrop-blur-xl bg-gradient-to-br from-white/5 to-white/[0.02]">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-bold text-foreground">Learning Stats</h3>
+              <div className="p-2 rounded-lg bg-purple-600/20">
+                <BarChart3 className="w-5 h-5 text-purple-400" />
+              </div>
+            </div>
+            <div className="space-y-4">
+              <div>
+                <div className="flex justify-between mb-2">
+                  <span className="text-sm text-muted-foreground">Completion</span>
+                  <span className="text-sm font-medium">65%</span>
+                </div>
+                <div className="h-2 bg-white/10 rounded-full overflow-hidden">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: "65%" }}
+                    transition={{ delay: 1.2, duration: 0.8 }}
+                    className="h-full bg-gradient-to-r from-primary to-accent rounded-full"
+                  />
+                </div>
+              </div>
+              <div>
+                <div className="flex justify-between mb-2">
+                  <span className="text-sm text-muted-foreground">Retention</span>
+                  <span className="text-sm font-medium">82%</span>
+                </div>
+                <div className="h-2 bg-white/10 rounded-full overflow-hidden">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: "82%" }}
+                    transition={{ delay: 1.3, duration: 0.8 }}
+                    className="h-full bg-gradient-to-r from-green-600 to-emerald-600 rounded-full"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
       </motion.div>
-
     </div>
   );
 }
