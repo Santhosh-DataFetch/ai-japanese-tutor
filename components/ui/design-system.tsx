@@ -85,7 +85,10 @@ export function PremiumButton({ className, ...props }: PremiumButtonProps) {
   );
 }
 
-export function PremiumInput({ className, label, description, icon, id, ...props }: PremiumInputProps) {
+const PremiumInput = React.forwardRef<HTMLInputElement, PremiumInputProps>(function PremiumInput(
+  { className, label, description, icon, id, ...props },
+  ref,
+) {
   const inputId = id ?? React.useId();
 
   return (
@@ -98,6 +101,7 @@ export function PremiumInput({ className, label, description, icon, id, ...props
       <div className="relative">
         {icon ? <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-white/60">{icon}</span> : null}
         <input
+          ref={ref}
           id={inputId}
           className={cn(
             'h-11 w-full rounded-2xl border border-white/12 bg-white/8 px-3 text-sm text-foreground placeholder:text-white/35 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] outline-none backdrop-blur-xl transition focus:border-teal-400/40 focus:ring-3 focus:ring-teal-400/20',
@@ -110,7 +114,9 @@ export function PremiumInput({ className, label, description, icon, id, ...props
       {description ? <p className="text-xs text-muted-foreground">{description}</p> : null}
     </div>
   );
-}
+});
+
+export { PremiumInput };
 
 export function PageHeader({ className, eyebrow, title, description, actions, ...props }: PageHeaderProps) {
   return (
