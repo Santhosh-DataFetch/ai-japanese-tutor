@@ -1,9 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Brain, BookOpen, Flame, Zap, Sparkles } from "lucide-react";
+import { Sparkles } from "lucide-react";
+
+import {
+  GlassCard,
+  GlassPanel,
+  PageHeader,
+  PremiumButton,
+  SectionTitle,
+  StatCard,
+} from "@/components/ui/design-system";
 
 interface DashboardStats {
   streak: number;
@@ -27,11 +34,7 @@ const metrics = [
 export default function DashboardClient({ stats }: Props) {
   return (
     <div className="relative overflow-hidden px-4 py-6 md:px-8 lg:px-10">
-      <div className="glass-panel relative overflow-hidden rounded-[42px] border-white/10 bg-[rgba(255,255,255,0.08)] p-8 shadow-[0_40px_120px_-46px_rgba(0,0,0,0.78)] md:p-12">
-        <div className="absolute left-0 top-10 h-40 w-40 rounded-full bg-teal-400/12 blur-3xl" />
-        <div className="absolute right-6 top-24 h-56 w-56 rounded-full bg-sky-400/10 blur-3xl" />
-        <div className="absolute -left-10 bottom-12 h-48 w-48 rounded-full bg-violet-500/10 blur-3xl" />
-
+      <GlassPanel className="p-8 md:p-12">
         <div className="relative grid gap-8 xl:grid-cols-[1.8fr_1.2fr] xl:items-end">
           <div className="space-y-6">
             <div className="inline-flex items-center gap-3 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm uppercase tracking-[0.34em] text-slate-300 shadow-[0_12px_40px_-32px_rgba(0,0,0,0.9)]">
@@ -44,15 +47,17 @@ export default function DashboardClient({ stats }: Props) {
             </div>
             <div className="flex flex-wrap gap-4">
               <Link href="/review">
-                <Button className="rounded-[20px] px-6 py-3">Continue review</Button>
+                <PremiumButton className="rounded-[20px] px-6 py-3">Continue review</PremiumButton>
               </Link>
               <Link href="/tutor">
-                <Button variant="secondary" className="rounded-[20px] px-6 py-3">Launch tutor</Button>
+                <PremiumButton variant="secondary" className="rounded-[20px] px-6 py-3">
+                  Launch tutor
+                </PremiumButton>
               </Link>
             </div>
           </div>
 
-          <div className="rounded-[34px] border border-white/10 bg-white/5 p-8 shadow-[0_32px_120px_-48px_rgba(0,0,0,0.82)]">
+          <GlassCard className="p-8">
             <p className="text-sm uppercase tracking-[0.32em] text-slate-400">Focus snapshot</p>
             <div className="mt-8 grid gap-5">
               <div className="rounded-[28px] border border-white/10 bg-[rgba(255,255,255,0.08)] p-5">
@@ -64,13 +69,13 @@ export default function DashboardClient({ stats }: Props) {
                 <p className="mt-4 text-4xl font-semibold text-white">{stats.streak}d</p>
               </div>
             </div>
-          </div>
+          </GlassCard>
         </div>
-      </div>
+      </GlassPanel>
 
       <section className="mt-10 grid gap-6 xl:grid-cols-[1.35fr_0.95fr]">
         <div className="grid gap-6">
-          <div className="glass-card rounded-[34px] p-8 shadow-[0_36px_124px_-52px_rgba(0,0,0,0.82)]">
+          <GlassCard className="p-8">
             <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
               <div className="space-y-4">
                 <p className="text-sm uppercase tracking-[0.34em] text-slate-400">Learning mission</p>
@@ -86,27 +91,23 @@ export default function DashboardClient({ stats }: Props) {
                 </div>
               </div>
             </div>
-          </div>
+          </GlassCard>
 
           <div className="grid gap-6 md:grid-cols-2">
             {metrics.map((metric) => (
-              <div key={metric.label} className="glass-card rounded-[32px] p-6 shadow-[0_30px_100px_-50px_rgba(0,0,0,0.85)]">
-                <div className="flex items-center justify-between gap-4">
-                  <div>
-                    <p className="text-sm uppercase tracking-[0.3em] text-slate-400">{metric.label}</p>
-                    <p className="mt-4 text-3xl font-semibold text-white">{stats[metric.key as keyof DashboardStats]}</p>
-                  </div>
-                  <div className={`inline-flex h-12 w-12 items-center justify-center rounded-3xl bg-gradient-to-br ${metric.accent} text-[#041615] shadow-[0_16px_32px_-22px_rgba(45,212,191,0.55)]`}>
-                    <span className="text-xl">{metric.emoji}</span>
-                  </div>
-                </div>
-              </div>
+              <StatCard
+                key={metric.label}
+                label={metric.label}
+                value={stats[metric.key as keyof DashboardStats]}
+                change={metric.emoji}
+                className={`bg-gradient-to-br ${metric.accent} p-6`}
+              />
             ))}
           </div>
         </div>
 
         <aside className="space-y-6">
-          <div className="glass-panel rounded-[34px] p-8 shadow-[0_36px_124px_-52px_rgba(0,0,0,0.82)]">
+          <GlassPanel className="p-8">
             <div className="flex flex-col gap-4">
               <div>
                 <p className="text-sm uppercase tracking-[0.32em] text-slate-400">Today</p>
@@ -121,9 +122,9 @@ export default function DashboardClient({ stats }: Props) {
                 <p className="mt-4 text-3xl font-semibold text-white">{stats.streak} days</p>
               </div>
             </div>
-          </div>
+          </GlassPanel>
 
-          <div className="glass-card rounded-[34px] p-8 shadow-[0_36px_124px_-52px_rgba(0,0,0,0.82)]">
+          <GlassCard className="p-8">
             <div className="flex items-center justify-between gap-4">
               <div>
                 <p className="text-sm uppercase tracking-[0.28em] text-slate-400">Quick actions</p>
@@ -136,16 +137,17 @@ export default function DashboardClient({ stats }: Props) {
               <Link href="/vocabulary" className="rounded-[24px] border border-white/10 bg-white/5 px-4 py-3 text-sm text-white transition hover:bg-white/10">Browse Vocabulary</Link>
               <Link href="/tutor" className="rounded-[24px] border border-white/10 bg-white/5 px-4 py-3 text-sm text-white transition hover:bg-white/10">Launch Tutor</Link>
             </div>
-          </div>
+          </GlassCard>
         </aside>
       </section>
 
-      <section className="mt-10 glass-panel rounded-[42px] border-white/10 p-8 shadow-[0_40px_130px_-58px_rgba(0,0,0,0.82)]">
+      <GlassPanel className="mt-10 p-8">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-          <div>
-            <p className="text-sm uppercase tracking-[0.34em] text-slate-400">Insight</p>
-            <h2 className="mt-3 text-3xl font-semibold text-white">Your progress at a glance.</h2>
-          </div>
+          <SectionTitle
+            eyebrow="Insight"
+            title="Your progress at a glance."
+            description="Updated after each review session"
+          />
           <div className="rounded-[28px] border border-white/10 bg-white/5 px-4 py-3 text-sm text-slate-300">Updated after each review session</div>
         </div>
         <div className="mt-8 grid gap-6 lg:grid-cols-2">
@@ -158,7 +160,7 @@ export default function DashboardClient({ stats }: Props) {
             <div className="mt-6 h-48 rounded-[28px] bg-gradient-to-br from-violet-400/15 to-fuchsia-400/5 shadow-inner shadow-black/20" />
           </div>
         </div>
-      </section>
+      </GlassPanel>
     </div>
   );
 }
