@@ -18,7 +18,13 @@ interface ScrollAnimationProps {
 
 export function ScrollAnimation({ children, className, viewport }: ScrollAnimationProps) {
   const ref = useRef<HTMLDivElement | null>(null)
-  const inView = useInView(ref, { margin: '0px 0px -10% 0px', amount: 0.4, ...(viewport ?? {}) })
+  const inView = useInView(ref, {
+    margin: '0px 0px -10% 0px',
+    amount: 0.4,
+    root: viewport?.root ?? undefined,
+    rootMargin: viewport?.rootMargin,
+    threshold: viewport?.threshold,
+  })
 
   return (
     <motion.div

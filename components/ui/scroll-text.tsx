@@ -1,20 +1,8 @@
 "use client"
 
 import { motion } from 'framer-motion'
-import { type ElementType, type HTMLAttributes } from 'react'
+import { type HTMLAttributes } from 'react'
 import { cn } from '@/lib/utils'
-
-const motionTagMap = {
-  div: motion.div,
-  span: motion.span,
-  p: motion.p,
-  h1: motion.h1,
-  h2: motion.h2,
-  h3: motion.h3,
-  h4: motion.h4,
-  h5: motion.h5,
-  h6: motion.h6,
-} as const
 
 interface ScrollTextProps extends HTMLAttributes<HTMLDivElement> {
   text: string
@@ -23,7 +11,6 @@ interface ScrollTextProps extends HTMLAttributes<HTMLDivElement> {
   lineAnime?: boolean
   direction?: 'left' | 'right' | 'down'
   variants?: any
-  as?: ElementType
 }
 
 export default function ScrollText({
@@ -33,10 +20,8 @@ export default function ScrollText({
   lineAnime,
   direction,
   variants,
-  as: Tag = 'div',
   ...props
 }: ScrollTextProps) {
-  const MotionTag = (typeof Tag === 'string' && Tag in motionTagMap ? motionTagMap[Tag as keyof typeof motionTagMap] : motion.div)
   const animation = letterAnime
     ? {
         hidden: { opacity: 0, y: 24, filter: 'blur(10px)' },
@@ -48,7 +33,7 @@ export default function ScrollText({
       }
 
   return (
-    <MotionTag
+    <motion.div
       initial="hidden"
       animate="visible"
       variants={variants ?? animation}
@@ -56,6 +41,6 @@ export default function ScrollText({
       {...props}
     >
       {text}
-    </MotionTag>
+    </motion.div>
   )
 }
