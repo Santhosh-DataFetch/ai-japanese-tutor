@@ -27,7 +27,7 @@ export default function TutorClient({
 
   return (
     <DashboardLayout>
-      <div className="flex h-[calc(100vh-5rem)] gap-4">
+      <motion.div className="flex h-[calc(100vh-5rem)] gap-4">
 
         {/* Sidebar */}
         <motion.div 
@@ -50,7 +50,7 @@ export default function TutorClient({
             currentId={currentChatId}
             onSelect={setCurrentChatId}
           />
-        </div>
+        </motion.div>
 
         {/* Main */}
         <motion.div 
@@ -156,11 +156,12 @@ export default function TutorClient({
               <p className="text-xs text-muted-foreground">
                 Every conversation helps improve your Japanese.
               </p>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
+    </motion.div>
     </DashboardLayout>
   )
 }
