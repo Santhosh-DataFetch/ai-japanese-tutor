@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { motion } from 'framer-motion'
+import { addVocabulary } from '@/app/actions/vocabulary'
 
 export function AddWordForm() {
   const [kanji, setKanji] = useState('')
@@ -12,15 +13,10 @@ export function AddWordForm() {
   const [jlpt, setJlpt] = useState('N5')
   const [loading, setLoading] = useState(false)
 
-  async function handleSubmit(
-    e: React.FormEvent<HTMLFormElement>
-  ) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
 
-    if (
-      !hiragana.trim() ||
-      !meaning.trim()
-    ) {
+    if (!hiragana.trim() || !meaning.trim()) {
       alert('Please fill all required fields.')
       return
     }
@@ -28,16 +24,14 @@ export function AddWordForm() {
     setLoading(true)
 
     try {
-      // We'll connect this to Supabase next.
       await addVocabulary({
-  kanji,
-  hiragana,
-  meaning,
-  example,
-})
+        kanji,
+        hiragana,
+        meaning,
+        example,
+      })
 
-alert('Word saved successfully!')
-
+      alert('Word saved successfully!')
       setKanji('')
       setHiragana('')
       setMeaning('')
@@ -56,100 +50,45 @@ alert('Word saved successfully!')
       onSubmit={handleSubmit}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="glass-card rounded-xl p-6 space-y-5"
+      className="glass-card rounded-[28px] p-6 space-y-5"
     >
-      <h2 className="text-2xl font-bold">
-        Manual Entry
-      </h2>
-
-      <div className="space-y-2">
-        <label className="text-sm font-medium">
-          Japanese (Kanji)
-        </label>
-
-        <input
-          value={kanji}
-          onChange={(e) =>
-            setKanji(e.target.value)
-          }
-          className="w-full rounded-lg border border-border bg-background p-3"
-          placeholder="日本"
-        />
+      <div>
+        <h2 className="text-2xl font-semibold text-white">Manual entry</h2>
+        <p className="mt-2 text-sm text-slate-400">Capture a new word with a calm, focused form that stays out of your way.</p>
       </div>
 
       <div className="space-y-2">
-        <label className="text-sm font-medium">
-          Reading (Hiragana) *
-        </label>
-
-        <input
-          value={hiragana}
-          onChange={(e) =>
-            setHiragana(e.target.value)
-          }
-          className="w-full rounded-lg border border-border bg-background p-3"
-          placeholder="にほん"
-          required
-        />
+        <label className="text-sm font-medium text-slate-300">Japanese (Kanji)</label>
+        <input value={kanji} onChange={(e) => setKanji(e.target.value)} className="glass-input" placeholder="日本" />
       </div>
 
       <div className="space-y-2">
-        <label className="text-sm font-medium">
-          English Meaning *
-        </label>
-
-        <input
-          value={meaning}
-          onChange={(e) =>
-            setMeaning(e.target.value)
-          }
-          className="w-full rounded-lg border border-border bg-background p-3"
-          placeholder="Japan"
-          required
-        />
+        <label className="text-sm font-medium text-slate-300">Reading (Hiragana) *</label>
+        <input value={hiragana} onChange={(e) => setHiragana(e.target.value)} className="glass-input" placeholder="にほん" required />
       </div>
 
       <div className="space-y-2">
-        <label className="text-sm font-medium">
-          Example Sentence
-        </label>
-
-        <textarea
-          value={example}
-          onChange={(e) =>
-            setExample(e.target.value)
-          }
-          rows={3}
-          className="w-full rounded-lg border border-border bg-background p-3"
-          placeholder="私は日本へ行きたいです。"
-        />
+        <label className="text-sm font-medium text-slate-300">English Meaning *</label>
+        <input value={meaning} onChange={(e) => setMeaning(e.target.value)} className="glass-input" placeholder="Japan" required />
       </div>
 
       <div className="space-y-2">
-        <label className="text-sm font-medium">
-          JLPT Level
-        </label>
+        <label className="text-sm font-medium text-slate-300">Example Sentence</label>
+        <textarea value={example} onChange={(e) => setExample(e.target.value)} rows={3} className="glass-input min-h-24 resize-none" placeholder="私は日本へ行きたいです。" />
+      </div>
 
-        <select
-          value={jlpt}
-          onChange={(e) =>
-            setJlpt(e.target.value)
-          }
-          className="w-full rounded-lg border border-border bg-background p-3"
-        >
-          <option>N5</option>
-          <option>N4</option>
-          <option>N3</option>
-          <option>N2</option>
-          <option>N1</option>
+      <div className="space-y-2">
+        <label className="text-sm font-medium text-slate-300">JLPT Level</label>
+        <select value={jlpt} onChange={(e) => setJlpt(e.target.value)} className="glass-input">
+          <option value="N5">N5</option>
+          <option value="N4">N4</option>
+          <option value="N3">N3</option>
+          <option value="N2">N2</option>
+          <option value="N1">N1</option>
         </select>
       </div>
 
-      <Button
-        type="submit"
-        disabled={loading}
-        className="w-full"
-      >
+      <Button type="submit" disabled={loading} className="w-full justify-center">
         {loading ? 'Saving...' : 'Save Word'}
       </Button>
     </motion.form>

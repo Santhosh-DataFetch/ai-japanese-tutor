@@ -7,7 +7,7 @@ export default async function ReviewPage() {
 
   return (
     <DashboardLayout>
-      <div className="mx-auto max-w-5xl p-8">
+      <div className="mx-auto max-w-6xl py-4 md:py-6">
         <ReviewSession words={words} />
       </div>
     </DashboardLayout>

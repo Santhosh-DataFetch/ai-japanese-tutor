@@ -18,70 +18,25 @@ export default function SettingsForm({
     useTransition();
 
   return (
-    <div className="premium-card mt-8 space-y-8">
-
+    <div className="glass-panel rounded-[32px] p-8 space-y-8">
       <div>
-
-        <label>Daily Goal</label>
-
-        <input
-          className="mt-2 w-full rounded-lg bg-muted p-3"
-          value={goal}
-          type="number"
-          onChange={(e) =>
-            setGoal(Number(e.target.value))
-          }
-        />
-
+        <label className="text-sm uppercase tracking-[0.24em] text-slate-400">Daily goal</label>
+        <input className="glass-input mt-3" value={goal} type="number" onChange={(e) => setGoal(Number(e.target.value))} />
       </div>
 
       <div>
-
-        <label>AI Model</label>
-
-        <input
-          className="mt-2 w-full rounded-lg bg-muted p-3"
-          value={model}
-          onChange={(e) =>
-            setModel(e.target.value)
-          }
-        />
-
+        <label className="text-sm uppercase tracking-[0.24em] text-slate-400">AI model</label>
+        <input className="glass-input mt-3" value={model} onChange={(e) => setModel(e.target.value)} />
       </div>
 
       <div>
-
-        <label>Temperature</label>
-
-        <input
-          className="mt-2 w-full rounded-lg bg-muted p-3"
-          value={temperature}
-          type="number"
-          step="0.1"
-          min="0"
-          max="2"
-          onChange={(e) =>
-            setTemperature(Number(e.target.value))
-          }
-        />
-
+        <label className="text-sm uppercase tracking-[0.24em] text-slate-400">Temperature</label>
+        <input className="glass-input mt-3" value={temperature} type="number" step="0.1" min="0" max="2" onChange={(e) => setTemperature(Number(e.target.value))} />
       </div>
 
-      <Button
-        disabled={pending}
-        onClick={() =>
-          startTransition(() =>
-            saveSettings(
-              goal,
-              model,
-              temperature
-            )
-          )
-        }
-      >
+      <Button disabled={pending} onClick={() => startTransition(() => saveSettings(goal, model, temperature))} className="w-full justify-center">
         Save Settings
       </Button>
-
     </div>
   );
 }

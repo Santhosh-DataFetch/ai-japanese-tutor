@@ -36,163 +36,68 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background p-4 relative overflow-hidden">
-      {/* Animated background elements */}
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background p-4">
       <div className="absolute inset-0 pointer-events-none">
-        <motion.div
-          animate={{
-            x: [0, 50, 0],
-            y: [0, 30, 0],
-          }}
-          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute top-10 left-10 w-72 h-72 bg-accent/5 rounded-full blur-3xl"
-        />
-        <motion.div
-          animate={{
-            x: [0, -50, 0],
-            y: [0, -30, 0],
-          }}
-          transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
-          className="absolute bottom-10 right-10 w-96 h-96 bg-primary/5 rounded-full blur-3xl"
-        />
+        <motion.div animate={{ x: [0, 50, 0], y: [0, 30, 0] }} transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }} className="absolute left-10 top-10 h-72 w-72 rounded-full bg-teal-400/10 blur-3xl" />
+        <motion.div animate={{ x: [0, -50, 0], y: [0, -30, 0] }} transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }} className="absolute bottom-10 right-10 h-96 w-96 rounded-full bg-sky-400/10 blur-3xl" />
       </div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 20, scale: 0.95 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 0.6, ease: 'easeOut' }}
-        className="w-full max-w-md relative z-10"
-      >
-        <div className="premium-card p-8 space-y-8">
-          {/* Header */}
+      <motion.div initial={{ opacity: 0, y: 20, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 0.6, ease: 'easeOut' }} className="relative z-10 w-full max-w-md">
+        <div className="glass-panel rounded-[32px] p-8 space-y-8">
           <div className="space-y-3 text-center">
-            <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="flex items-center justify-center"
-            >
-              <div className="p-3 rounded-2xl bg-gradient-to-br from-accent via-primary to-secondary">
-                <span className="text-2xl font-bold text-white">L</span>
+            <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 0.5, delay: 0.1 }} className="flex items-center justify-center">
+              <div className="rounded-[20px] bg-gradient-to-br from-teal-400/30 via-sky-400/30 to-violet-400/20 p-3">
+                <span className="text-2xl font-semibold text-white">L</span>
               </div>
             </motion.div>
-            <h1 className="text-3xl font-bold tracking-tight">Welcome back</h1>
-            <p className="text-muted-foreground">Sign in to continue your learning journey</p>
+            <h1 className="text-3xl font-semibold tracking-tight text-white">Welcome back</h1>
+            <p className="text-slate-300">Sign in to continue your learning journey.</p>
           </div>
 
-          {/* Form */}
           <form onSubmit={handleLogin} className="space-y-5">
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.2 }}
-              className="space-y-2"
-            >
-              <label htmlFor="email" className="text-sm font-semibold text-foreground block">
-                Email Address
-              </label>
-              <input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@example.com"
-                required
-                className="w-full px-4 py-3 rounded-2xl bg-input border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-transparent transition-all duration-200"
-              />
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.2 }} className="space-y-2">
+              <label htmlFor="email" className="block text-sm font-medium text-slate-300">Email address</label>
+              <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" required className="glass-input" />
             </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.25 }}
-              className="space-y-2"
-            >
-              <label htmlFor="password" className="text-sm font-semibold text-foreground block">
-                Password
-              </label>
-              <input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                required
-                className="w-full px-4 py-3 rounded-2xl bg-input border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-transparent transition-all duration-200"
-              />
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.25 }} className="space-y-2">
+              <label htmlFor="password" className="block text-sm font-medium text-slate-300">Password</label>
+              <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" required className="glass-input" />
             </motion.div>
 
             {error && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="p-4 bg-destructive/10 border border-destructive/30 rounded-2xl text-sm text-destructive font-medium"
-              >
+              <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="rounded-[20px] border border-rose-400/20 bg-rose-400/10 p-4 text-sm font-medium text-rose-200">
                 {error}
               </motion.div>
             )}
 
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
-            >
-              <Button
-                type="submit"
-                disabled={isLoading}
-                className="w-full bg-gradient-to-r from-accent via-primary to-secondary hover:opacity-90 text-white font-semibold rounded-2xl h-12 transition-all duration-200"
-              >
-                {isLoading ? (
-                  <motion.span
-                    animate={{ opacity: [1, 0.5, 1] }}
-                    transition={{ duration: 1.5, repeat: Infinity }}
-                  >
-                    Signing in...
-                  </motion.span>
-                ) : (
-                  'Sign In'
-                )}
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
+              <Button type="submit" disabled={isLoading} className="h-12 w-full justify-center rounded-[18px]">
+                {isLoading ? <motion.span animate={{ opacity: [1, 0.5, 1] }} transition={{ duration: 1.5, repeat: Infinity }}>Signing in...</motion.span> : 'Sign In'}
               </Button>
             </motion.div>
           </form>
 
-          {/* Divider */}
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-border/50" />
+              <div className="w-full border-t border-white/10" />
             </div>
             <div className="relative flex justify-center">
-              <span className="px-3 bg-card text-xs font-medium text-muted-foreground uppercase tracking-wide">
-                New to L?
-              </span>
+              <span className="bg-transparent px-3 text-xs font-medium uppercase tracking-wide text-slate-400">New to L?</span>
             </div>
           </div>
 
-          {/* Sign Up Link */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.35 }}
-          >
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.35 }}>
             <Link href="/signup">
-              <Button
-                type="button"
-                className="w-full bg-card hover:bg-card/80 border border-border text-foreground font-semibold rounded-2xl h-12 transition-all duration-200"
-              >
+              <Button type="button" variant="secondary" className="h-12 w-full justify-center rounded-[18px]">
                 Create Account
               </Button>
             </Link>
           </motion.div>
         </div>
 
-        {/* Footer text */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
-          className="text-center text-xs text-muted-foreground mt-6"
-        >
-          Master Japanese with premium learning tools
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="mt-6 text-center text-xs text-slate-400">
+          Master Japanese with premium learning tools.
         </motion.p>
       </motion.div>
     </div>

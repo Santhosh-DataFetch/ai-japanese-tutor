@@ -26,87 +26,42 @@ export default function TutorClient({
 
   return (
     <DashboardLayout>
-      <div className="flex h-[calc(100vh-5rem)] gap-4">
-
-        {/* Sidebar */}
-        <div className="w-72 shrink-0 glass-card rounded-xl border border-border p-4 overflow-y-auto">
-          <h2 className="mb-4 text-lg font-bold">Chats</h2>
-         <button
-  onClick={() => setCurrentChatId(undefined)}
-  className="mb-4 w-full rounded-lg bg-primary px-4 py-2 text-white"
->
-  + New Chat
-</button>
-          <ChatHistory
-            sessions={sessions}
-            currentId={currentChatId}
-            onSelect={setCurrentChatId}
-          />
+      <div className="flex h-[calc(100vh-5rem)] flex-col gap-4 lg:flex-row">
+        <div className="w-full shrink-0 rounded-[28px] border border-white/10 bg-white/6 p-4 overflow-y-auto lg:w-72">
+          <h2 className="mb-4 text-lg font-semibold text-white">Chats</h2>
+          <button onClick={() => setCurrentChatId(undefined)} className="mb-4 w-full rounded-[16px] bg-gradient-to-r from-teal-400/20 to-sky-400/20 px-4 py-2 text-sm font-medium text-white">
+            + New Chat
+          </button>
+          <ChatHistory sessions={sessions} currentId={currentChatId} onSelect={setCurrentChatId} />
         </div>
 
-        {/* Main */}
-        <div className="flex-1 flex flex-col gap-4">
-
-          {/* Header */}
-          <div className="space-y-2">
-            <h1 className="text-3xl font-bold">
-              AI Tutor
-            </h1>
-
-            <div className="flex gap-4">
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Lightbulb className="w-4 h-4 text-yellow-500" />
-                <span>Personalized learning at your pace</span>
-              </div>
-
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <BookOpen className="w-4 h-4 text-blue-500" />
-                <span>Practice conversation anytime</span>
-              </div>
+        <div className="flex flex-1 flex-col gap-4">
+          <div className="glass-panel rounded-[28px] p-6">
+            <h1 className="text-3xl font-semibold tracking-[-0.03em] text-white">AI Tutor</h1>
+            <div className="mt-4 flex flex-col gap-3 text-sm text-slate-300 sm:flex-row">
+              <div className="flex items-center gap-2"><Lightbulb className="h-4 w-4 text-amber-300" /><span>Personalized learning at your pace</span></div>
+              <div className="flex items-center gap-2"><BookOpen className="h-4 w-4 text-sky-300" /><span>Practice conversation anytime</span></div>
             </div>
           </div>
 
-          {/* Chat */}
-          <div className="flex-1 glass-card rounded-xl border border-border p-6 overflow-hidden">
-            <ChatInterface
-  userId={user.id}
-  sessionId={currentChatId}
-/>
+          <div className="flex-1 overflow-hidden rounded-[28px] border border-white/10 bg-white/6 p-6">
+            <ChatInterface userId={user.id} sessionId={currentChatId} />
           </div>
 
-          {/* Tips */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="glass-card rounded-lg p-4">
-              <p className="mb-1 text-sm font-semibold">
-                💭 Ask Questions
-              </p>
-
-              <p className="text-xs text-muted-foreground">
-                Feel free to ask about grammar, vocabulary or pronunciation.
-              </p>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+            <div className="glass-card rounded-[24px] p-4">
+              <p className="mb-1 text-sm font-semibold text-white">💭 Ask questions</p>
+              <p className="text-sm text-slate-400">Ask about grammar, vocabulary, or pronunciation without leaving the flow.</p>
             </div>
-
-            <div className="glass-card rounded-lg p-4">
-              <p className="mb-1 text-sm font-semibold">
-                🗣️ Practice Speaking
-              </p>
-
-              <p className="text-xs text-muted-foreground">
-                Type Japanese and receive instant feedback.
-              </p>
+            <div className="glass-card rounded-[24px] p-4">
+              <p className="mb-1 text-sm font-semibold text-white">🗣️ Practice speaking</p>
+              <p className="text-sm text-slate-400">Type Japanese and receive instant feedback in a relaxed setting.</p>
             </div>
-
-            <div className="glass-card rounded-lg p-4">
-              <p className="mb-1 text-sm font-semibold">
-                🎯 Track Progress
-              </p>
-
-              <p className="text-xs text-muted-foreground">
-                Every conversation helps improve your Japanese.
-              </p>
+            <div className="glass-card rounded-[24px] p-4">
+              <p className="mb-1 text-sm font-semibold text-white">🎯 Track progress</p>
+              <p className="text-sm text-slate-400">Every conversation helps your Japanese improve over time.</p>
             </div>
           </div>
-
         </div>
       </div>
     </DashboardLayout>

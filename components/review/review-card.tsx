@@ -102,65 +102,25 @@ const [loading, setLoading] =
   }
 }
   return (
-    <div className="glass-card rounded-3xl p-12 max-w-3xl mx-auto">
-
-      <p
-  className={`
-    mx-auto
-    text-center
-    text-7xl
-    font-bold
-    transition-all
-    duration-500
-    ${
-      showAnswer
-        ? "scale-95 opacity-70"
-        : "scale-100 opacity-100"
-    }
-  `}
->
-        {word.japanese_kanji ??
-          word.japanese_hiragana}
+    <div className="glass-panel rounded-[32px] p-8 md:p-12 max-w-3xl mx-auto">
+      <div className="glass-pill mb-6 inline-flex">Review card</div>
+      <p className={`mx-auto text-center text-7xl font-semibold tracking-[-0.04em] text-white transition-all duration-500 ${showAnswer ? 'scale-95 opacity-70' : 'scale-100 opacity-100'}`}>
+        {word.japanese_kanji ?? word.japanese_hiragana}
       </p>
 
       {!showAnswer ? (
-        <div
-  className="
-    animate-in
-    fade-in
-    zoom-in-95
-    duration-300
-  "
->
-
-          <Button
-  onClick={() =>
-    setShowAnswer(true)
-  }
->
-  ␣ Reveal Answer
-</Button>
-
+        <div className="mt-8 flex justify-center">
+          <Button onClick={() => setShowAnswer(true)} className="px-6">
+            <span className="mr-2">␣</span>
+            Reveal Answer
+          </Button>
         </div>
       ) : (
         <>
-          <p className="mt-6 text-center text-2xl font-semibold animate-in fade-in">
-            {word.japanese_hiragana}
-          </p>
-
-          <p className="mt-2 text-center text-lg text-primary animate-in fade-in">
-            {word.english_meaning}
-          </p>
-          {message && (
-    <p className="mt-4 text-center font-semibold text-green-500 animate-pulse">
-      {message}
-    </p>
-  )}
-
-          <ReviewButtons
-  loading={loading}
-  onRate={handleReview}
-/>
+          <p className="mt-8 text-center text-2xl font-semibold text-slate-100">{word.japanese_hiragana}</p>
+          <p className="mt-2 text-center text-lg text-sky-300">{word.english_meaning}</p>
+          {message && <p className="mt-4 text-center font-semibold text-teal-300">{message}</p>}
+          <ReviewButtons loading={loading} onRate={handleReview} />
         </>
       )}
     </div>

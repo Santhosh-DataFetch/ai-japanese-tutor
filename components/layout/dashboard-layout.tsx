@@ -4,6 +4,7 @@ import { ReactNode, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { getSession } from '@/app/actions/auth'
 import { Sidebar } from '@/components/navigation/sidebar'
+import AnimatedGrid from '@/components/ui/animatedgrid'
 
 interface DashboardLayoutProps {
   children: ReactNode
@@ -24,7 +25,6 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
         }
 
         setUserName(result.session.user?.email?.split('@')[0])
-        // TODO: Fetch user profile stats from database
         setIsLoading(false)
       } catch (error) {
         console.error('[v0] Session check error:', error)
@@ -37,20 +37,26 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="animate-pulse">
-          <div className="h-12 w-12 bg-primary rounded-lg" />
+      <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-slate-950 text-white">
+        <AnimatedGrid className="pointer-events-none absolute inset-0 -z-10" />
+        <div className="glass-panel relative rounded-full p-4 shadow-[0_24px_90px_-40px_rgba(0,0,0,0.72)]">
+          <div className="h-12 w-12 animate-pulse rounded-full bg-gradient-to-br from-teal-300 via-cyan-400 to-sky-400" />
         </div>
       </div>
     )
   }
 
   return (
-    <div className="flex h-screen bg-background">
-      <Sidebar userName={userName} />
-      <main className="flex-1 overflow-auto">
-        <div className="p-4 md:p-8">{children}</div>
-      </main>
+    <div className="relative min-h-screen overflow-hidden bg-slate-950 text-foreground">
+      <AnimatedGrid className="pointer-events-none absolute inset-0 -z-10" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(56,189,248,0.12),transparent_28%),radial-gradient(circle_at_bottom_right,_rgba(139,92,246,0.08),transparent_30%)] opacity-80" />
+
+      <div className="relative flex min-h-screen">
+        <Sidebar userName={userName} />
+        <main className="flex-1 overflow-auto px-4 py-5 md:px-6 md:py-6 lg:px-8 lg:py-8">
+          <div className="mx-auto w-full max-w-7xl">{children}</div>
+        </main>
+      </div>
     </div>
   )
 }

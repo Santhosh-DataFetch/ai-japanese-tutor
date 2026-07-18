@@ -67,23 +67,18 @@ const [showScrollButton, setShowScrollButton] = useState(false)
 }, [activeSessionId])
 
   useEffect(() => {
-  const container = chatRef.current
-  if (!container) return
+    const container = chatRef.current
+    if (!container) return
 
-  function handleScroll() {
-    const distance =
-      container.scrollHeight -
-      container.scrollTop -
-      container.clientHeight
+    function handleScroll() {
+      const distance = (container?.scrollHeight ?? 0) - (container?.scrollTop ?? 0) - (container?.clientHeight ?? 0)
+      setShowScrollButton(distance > 200)
+    }
 
-    setShowScrollButton(distance > 200)
-  }
+    container.addEventListener('scroll', handleScroll)
 
-  container.addEventListener("scroll", handleScroll)
-
-  return () =>
-    container.removeEventListener("scroll", handleScroll)
-}, [])
+    return () => container.removeEventListener('scroll', handleScroll)
+  }, [])
 
   async function onSubmit(
     e: React.FormEvent<HTMLFormElement>
@@ -111,29 +106,25 @@ const [showScrollButton, setShowScrollButton] = useState(false)
     setLoading(true)
 
     try {
-  let currentSessionId = activeSessionId
+      let currentSessionId = activeSessionId
 
-  if (!currentSessionId) {
-    const session = await createChatSession(
-      input.slice(0, 40)
-    )
+      if (!currentSessionId) {
+        const session = await createChatSession(input.slice(0, 40))
 
-    if (!session) {
-      throw new Error('Could not create chat')
-    }
+        if (!session) {
+          throw new Error('Could not create chat')
+        }
 
-    currentSessionId = session.id
+        currentSessionId = session.id
+        setActiveSessionId(currentSessionId)
+        router.refresh()
+      }
 
-    setActiveSessionId(currentSessionId)
+      if (!currentSessionId) {
+        throw new Error('Chat session unavailable')
+      }
 
-    router.refresh()
-  }
-
-  await saveMessage(
-    currentSessionId,
-    'user',
-    input
-  )
+      await saveMessage(currentSessionId, 'user', input)
 
   const response = await fetch('/api/chat',  {
         method: 'POST',
@@ -168,11 +159,7 @@ setMessages([
 
 
 
-await saveMessage(
-  currentSessionId,
-  'assistant',
-  data.message
-)
+      await saveMessage(currentSessionId, 'assistant', data.message)
     } catch (err: any) {
       setError(err.message)
     } finally {
@@ -182,12 +169,8 @@ await saveMessage(
   }
 
   return (
-    <div className="flex flex-col h-full gap-4">
-
-      <div
-  ref={chatRef}
-  className="flex-1 overflow-y-auto space-y-4 pr-2 relative"
->
+    <div className="flex h-full flex-col gap-4">
+      <div ref={chatRef} className="flex-1 overflow-y-auto space-y-4 pr-2 relative">
 
         {messages.length === 0 && (
           <motion.div
@@ -230,10 +213,10 @@ transition={{
             }`}
           >
             <div
-              className={`max-w-[75%] rounded-2xl px-4 py-3 whitespace-pre-wrap ${
+              className={`max-w-[75%] rounded-[20px] px-4 py-3 whitespace-pre-wrap ${
                 message.role === 'user'
-                  ? 'bg-primary text-primary-foreground'
-                  : 'glass-card'
+                  ? 'bg-gradient-to-r from-teal-400/20 to-sky-400/20 text-white'
+                  : 'border border-white/10 bg-white/8 text-slate-200'
               }`}
             >
               {message.text}
@@ -243,8 +226,8 @@ transition={{
 
         {loading && (
           <div className="flex justify-start">
-            <div className="glass-card rounded-2xl px-4 py-3">
-              <Loader className="h-4 w-4 animate-spin" />
+            <div className="rounded-[20px] border border-white/10 bg-white/8 px-4 py-3">
+              <Loader className="h-4 w-4 animate-spin text-teal-300" />
             </div>
           </div>
         )}
@@ -280,10 +263,8 @@ transition={{
         <div ref={messagesEndRef} />
       </div>
 
-      <form
-        onSubmit={onSubmit}
-        className="flex gap-3 pt-4 border-t border-border"
-      >
+      <form onSubmit={onSubmit} className="flex gap-3 border-t border-white/10 pt-4">
+
         <input
           ref={inputRef}
           type="text"
@@ -291,24 +272,13 @@ transition={{
           onChange={(e) => setInput(e.target.value)}
           disabled={loading}
           placeholder="Ask anything about Japanese..."
-          className="
-            flex-1
-            rounded-2xl
-            border
-            border-border
-            bg-background
-            px-5
-            py-3
-            outline-none
-            focus:ring-2
-            focus:ring-primary
-          "
+          className="flex-1 rounded-[18px] border border-white/10 bg-white/8 px-5 py-3 text-white outline-none placeholder:text-slate-400 focus:border-teal-400/30 focus:ring-2 focus:ring-teal-400/20"
         />
 
         <Button
           type="submit"
           disabled={loading || !input.trim()}
-          className="rounded-2xl px-6"
+          className="rounded-[18px] px-6"
         >
           {loading ? (
             <Loader className="h-4 w-4 animate-spin" />

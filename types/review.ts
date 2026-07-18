@@ -1,4 +1,4 @@
-import type { Vocabulary } from "./vocabulary";
+import type { Vocabulary } from "./index";
 
 export interface ReviewSessionProps {
   words: Vocabulary[];

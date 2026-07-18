@@ -22,10 +22,10 @@ export default function ChatHistory({
         <button
           key={chat.id}
           onClick={() => onSelect(chat.id)}
-          className={`w-full rounded-lg p-3 text-left transition ${
+          className={`w-full rounded-[16px] border p-3 text-left text-sm transition ${
             currentId === chat.id
-              ? 'bg-primary text-white'
-              : 'hover:bg-muted'
+              ? 'border-teal-400/30 bg-teal-400/10 text-white'
+              : 'border-white/10 bg-white/6 text-slate-300 hover:bg-white/10'
           }`}
         >
           {chat.title}
