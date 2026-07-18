@@ -2,6 +2,8 @@ import { DashboardLayout } from "@/components/layout/dashboard-layout";
 import DashboardClient from "@/components/dashboard/dashboard-client";
 import { getDashboardStats } from "@/app/actions/dashboard";
 
+export const dynamic = 'force-dynamic';
+
 export default async function DashboardPage() {
   const stats = await getDashboardStats();
 

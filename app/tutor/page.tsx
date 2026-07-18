@@ -3,6 +3,8 @@ import { getUser } from '@/app/actions/auth'
 import { getChatSessions } from '@/app/actions/chat'
 import TutorClient from '@/components/tutor/tutor-client'
 
+export const dynamic = 'force-dynamic';
+
 export default async function TutorPage() {
   const result = await getUser()
 

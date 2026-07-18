@@ -2,6 +2,8 @@ import { DashboardLayout } from "@/components/layout/dashboard-layout";
 import { getDueVocabulary } from "@/app/actions/vocabulary";
 import ReviewSession from "@/components/review/review-session";
 
+export const dynamic = 'force-dynamic';
+
 export default async function ReviewPage() {
   const words = await getDueVocabulary();
 

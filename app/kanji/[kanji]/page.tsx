@@ -3,6 +3,8 @@ import { DashboardLayout } from '@/components/layout/dashboard-layout'
 import { getVocabularyByKanji } from '@/app/actions/vocabulary'
 import AIExplanation from '@/components/kanji/ai-explanation'
 
+export const dynamic = 'force-dynamic';
+
 interface Props {
   params: Promise<{
     kanji: string
@@ -21,8 +23,6 @@ const data =
 
 const vocabulary =
   await getVocabularyByKanji(decodedKanji)
-  console.log("PAGE:", vocabulary)
-console.log("PAGE LENGTH:", vocabulary.length)
 
   return (
   <DashboardLayout>
