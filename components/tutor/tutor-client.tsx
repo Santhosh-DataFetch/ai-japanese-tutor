@@ -21,16 +21,16 @@ export default function TutorClient({
   sessions,
 }: TutorClientProps) {
   const [currentChatId, setCurrentChatId] =
-  useState<string | undefined>(
-    sessions[0]?.id
-  )
+    useState<string | undefined>(
+      sessions[0]?.id
+    )
 
   return (
     <DashboardLayout>
       <motion.div className="flex h-[calc(100vh-5rem)] gap-4">
 
         {/* Sidebar */}
-        <motion.div 
+        <motion.div
           className="w-72 shrink-0 glass-card rounded-xl border border-border p-4 overflow-y-auto backdrop-blur-xl"
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -53,7 +53,7 @@ export default function TutorClient({
         </motion.div>
 
         {/* Main */}
-        <motion.div 
+        <motion.div
           className="flex-1 flex flex-col gap-4"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -61,7 +61,7 @@ export default function TutorClient({
         >
 
           {/* Header */}
-          <motion.div 
+          <motion.div
             className="space-y-3"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -71,13 +71,13 @@ export default function TutorClient({
               AI Tutor
             </h1>
 
-            <motion.div 
+            <motion.div
               className="flex gap-4"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3, staggerChildren: 0.1 }}
             >
-              <motion.div 
+              <motion.div
                 className="flex items-center gap-2 text-sm text-muted-foreground smooth-transition hover:text-foreground"
                 whileHover={{ x: 4 }}
               >
@@ -85,7 +85,7 @@ export default function TutorClient({
                 <span>Personalized learning at your pace</span>
               </motion.div>
 
-              <motion.div 
+              <motion.div
                 className="flex items-center gap-2 text-sm text-muted-foreground smooth-transition hover:text-foreground"
                 whileHover={{ x: 4 }}
               >
@@ -96,7 +96,7 @@ export default function TutorClient({
           </motion.div>
 
           {/* Chat */}
-          <motion.div 
+          <motion.div
             className="flex-1 glass-card rounded-xl border border-border p-6 overflow-hidden backdrop-blur-xl"
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -110,13 +110,13 @@ export default function TutorClient({
           </motion.div>
 
           {/* Tips */}
-          <motion.div 
+          <motion.div
             className="grid grid-cols-1 md:grid-cols-3 gap-4"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, staggerChildren: 0.1 }}
           >
-            <motion.div 
+            <motion.div
               className="glass-card rounded-lg p-4 backdrop-blur-sm hover:border-primary/30 smooth-transition"
               variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
               whileHover={{ y: -2 }}
@@ -130,7 +130,7 @@ export default function TutorClient({
               </p>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               className="glass-card rounded-lg p-4 backdrop-blur-sm hover:border-accent/30 smooth-transition"
               variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
               whileHover={{ y: -2 }}
@@ -144,7 +144,7 @@ export default function TutorClient({
               </p>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               className="glass-card rounded-lg p-4 backdrop-blur-sm hover:border-primary/30 smooth-transition"
               variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
               whileHover={{ y: -2 }}
@@ -161,7 +161,7 @@ export default function TutorClient({
 
         </motion.div>
       </motion.div>
-    </motion.div>
+
     </DashboardLayout>
   )
 }
