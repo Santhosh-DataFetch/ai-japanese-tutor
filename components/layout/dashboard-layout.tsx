@@ -47,9 +47,8 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   }
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-slate-950 text-foreground">
-      <AnimatedGrid className="pointer-events-none absolute inset-0 -z-10" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(56,189,248,0.12),transparent_28%),radial-gradient(circle_at_bottom_right,_rgba(139,92,246,0.08),transparent_30%)] opacity-80" />
+    <div className="relative min-h-screen overflow-hidden bg-[#050505] text-foreground">
+      <AnimatedGrid />
 
       <div className="relative flex min-h-screen">
         <Sidebar userName={userName} />
