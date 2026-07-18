@@ -39,9 +39,10 @@ export function Flashcard({
       <motion.div
         onClick={() => setIsFlipped(!isFlipped)}
         animate={{ rotateY: isFlipped ? 180 : 0 }}
-        transition={{ duration: 0.3 }}
+        transition={{ duration: 0.4, type: 'spring', stiffness: 100 }}
         style={{ perspective: '1000px' }}
-        className="h-64 glass-card p-8 rounded-xl cursor-pointer flex items-center justify-center"
+        className="h-64 glass-card p-8 rounded-xl cursor-pointer flex items-center justify-center backdrop-blur-xl border border-white/10 group smooth-transition hover:shadow-lg hover:shadow-accent/20"
+        whileHover={{ y: -4 }}
       >
         <div className="text-center">
           {!isFlipped ? (
@@ -87,35 +88,44 @@ export function Flashcard({
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="grid grid-cols-3 gap-3"
+          transition={{ delay: 0.2 }}
+          className="grid grid-cols-3 gap-2 md:gap-3"
         >
-          <Button
-            onClick={() => onReviewQuality(0)}
-            variant="outline"
-            className="text-destructive hover:bg-destructive/10 border-destructive/30"
-          >
-            Forgot
-          </Button>
-          <Button
-            onClick={() => onReviewQuality(2)}
-            variant="outline"
-            className="text-yellow-500 hover:bg-yellow-500/10 border-yellow-500/30"
-          >
-            Hard
-          </Button>
-          <Button
-            onClick={() => onReviewQuality(3)}
-            variant="outline"
-            className="text-blue-500 hover:bg-blue-500/10 border-blue-500/30"
-          >
-            Good
-          </Button>
-          <Button
-            onClick={() => onReviewQuality(4)}
-            className="col-span-3 bg-green-600 hover:bg-green-700 text-white"
-          >
-            Easy - Got it!
-          </Button>
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <Button
+              onClick={() => onReviewQuality(0)}
+              variant="outline"
+              className="w-full text-destructive hover:bg-destructive/10 border-destructive/30 smooth-transition"
+            >
+              Forgot
+            </Button>
+          </motion.div>
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <Button
+              onClick={() => onReviewQuality(2)}
+              variant="outline"
+              className="w-full text-yellow-500 hover:bg-yellow-500/10 border-yellow-500/30 smooth-transition"
+            >
+              Hard
+            </Button>
+          </motion.div>
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <Button
+              onClick={() => onReviewQuality(3)}
+              variant="outline"
+              className="w-full text-blue-500 hover:bg-blue-500/10 border-blue-500/30 smooth-transition"
+            >
+              Good
+            </Button>
+          </motion.div>
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="col-span-3">
+            <Button
+              onClick={() => onReviewQuality(4)}
+              className="w-full col-span-3 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-semibold smooth-transition shadow-lg shadow-green-600/20 hover:shadow-green-600/40"
+            >
+              ✨ Easy - Got it!
+            </Button>
+          </motion.div>
         </motion.div>
       )}
     </motion.div>

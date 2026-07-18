@@ -112,7 +112,7 @@ router.push('/login')
                 onChange={(e) => setDisplayName(e.target.value)}
                 placeholder="Your name"
                 required
-                className="w-full px-4 py-3 rounded-2xl bg-input border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-transparent transition-all duration-200"
+                className="w-full px-4 py-3 rounded-2xl bg-input border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-background focus:border-transparent transition-all duration-200"
               />
             </motion.div>
 
@@ -132,7 +132,7 @@ router.push('/login')
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
                 required
-                className="w-full px-4 py-3 rounded-2xl bg-input border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-transparent transition-all duration-200"
+                className="w-full px-4 py-3 rounded-2xl bg-input border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-background focus:border-transparent transition-all duration-200"
               />
             </motion.div>
 
@@ -152,7 +152,7 @@ router.push('/login')
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
                 required
-                className="w-full px-4 py-3 rounded-2xl bg-input border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-transparent transition-all duration-200"
+                className="w-full px-4 py-3 rounded-2xl bg-input border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-background focus:border-transparent transition-all duration-200"
               />
               <p className="text-xs text-muted-foreground">At least 8 characters</p>
             </motion.div>
@@ -173,7 +173,7 @@ router.push('/login')
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="••••••••"
                 required
-                className="w-full px-4 py-3 rounded-2xl bg-input border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-transparent transition-all duration-200"
+                className="w-full px-4 py-3 rounded-2xl bg-input border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-background focus:border-transparent transition-all duration-200"
               />
             </motion.div>
 

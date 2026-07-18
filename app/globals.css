@@ -166,6 +166,7 @@
 }
 
 @layer components {
+  /* Premium Cards */
   .premium-card {
     @apply bg-card border border-border rounded-3xl p-6 transition-all duration-300;
     background: linear-gradient(135deg, rgba(124, 58, 237, 0.05) 0%, rgba(109, 40, 217, 0.02) 100%);
@@ -179,6 +180,7 @@
     transform: translateY(-2px);
   }
   
+  /* Glassmorphism Effects */
   .glass {
     @apply bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl;
   }
@@ -192,6 +194,7 @@
     background: linear-gradient(135deg, rgba(124, 58, 237, 0.05) 0%, rgba(109, 40, 217, 0.02) 100%);
   }
   
+  /* Stat Cards */
   .stat-card {
     @apply bg-card border border-border rounded-3xl p-6 transition-all duration-300 flex flex-col items-start justify-between;
     background: linear-gradient(135deg, rgba(124, 58, 237, 0.05) 0%, rgba(109, 40, 217, 0.02) 100%);
@@ -205,6 +208,7 @@
     transform: translateY(-2px);
   }
   
+  /* Loading Effects */
   .shimmer {
     background: linear-gradient(
       90deg,
@@ -213,5 +217,64 @@
       transparent
     );
     background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+  }
+  
+  .skeleton {
+    @apply bg-muted rounded-lg animate-pulse;
+  }
+  
+  /* Smooth Transitions */
+  .smooth-transition {
+    @apply transition-all duration-300 ease-out;
+  }
+  
+  /* Interactive Button Base */
+  .interactive-btn {
+    @apply relative overflow-hidden transition-all duration-200 ease-out;
+  }
+  
+  .interactive-btn:active {
+    transform: scale(0.98);
+  }
+  
+  /* Focus Ring */
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-background;
+  }
+  
+  /* Floating Animation */
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  /* Shimmer Animation */
+  @keyframes shimmer {
+    0% { background-position: -1000px 0; }
+    100% { background-position: 1000px 0; }
+  }
+  
+  /* Glow Effect */
+  .glow-effect {
+    @apply shadow-lg;
+    box-shadow: 0 0 20px rgba(124, 58, 237, 0.15);
+  }
+  
+  /* Deep Shadow for Elevation */
+  .elevation-sm {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .elevation-md {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .elevation-lg {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
   }
 }

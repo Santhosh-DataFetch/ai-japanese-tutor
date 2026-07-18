@@ -98,7 +98,7 @@ export default function LoginPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
                 required
-                className="w-full px-4 py-3 rounded-2xl bg-input border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-transparent transition-all duration-200"
+                className="w-full px-4 py-3 rounded-2xl bg-input border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent focus:ring-offset-2 focus:ring-offset-background smooth-transition"
               />
             </motion.div>
 
@@ -118,7 +118,7 @@ export default function LoginPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
                 required
-                className="w-full px-4 py-3 rounded-2xl bg-input border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-transparent transition-all duration-200"
+                className="w-full px-4 py-3 rounded-2xl bg-input border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent focus:ring-offset-2 focus:ring-offset-background smooth-transition"
               />
             </motion.div>
 
@@ -137,22 +137,24 @@ export default function LoginPage() {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
             >
-              <Button
-                type="submit"
-                disabled={isLoading}
-                className="w-full bg-gradient-to-r from-accent via-primary to-secondary hover:opacity-90 text-white font-semibold rounded-2xl h-12 transition-all duration-200"
-              >
-                {isLoading ? (
-                  <motion.span
-                    animate={{ opacity: [1, 0.5, 1] }}
-                    transition={{ duration: 1.5, repeat: Infinity }}
-                  >
-                    Signing in...
-                  </motion.span>
-                ) : (
-                  'Sign In'
-                )}
-              </Button>
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                <Button
+                  type="submit"
+                  disabled={isLoading}
+                  className="w-full bg-gradient-to-r from-accent via-primary to-secondary hover:opacity-90 text-white font-semibold rounded-2xl h-12 smooth-transition shadow-lg shadow-primary/30 hover:shadow-primary/50 disabled:opacity-50"
+                >
+                  {isLoading ? (
+                    <motion.span
+                      animate={{ opacity: [1, 0.5, 1] }}
+                      transition={{ duration: 1.5, repeat: Infinity }}
+                    >
+                      Signing in...
+                    </motion.span>
+                  ) : (
+                    'Sign In'
+                  )}
+                </Button>
+              </motion.div>
             </motion.div>
           </form>
 
@@ -173,11 +175,13 @@ export default function LoginPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.35 }}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
           >
             <Link href="/signup">
               <Button
                 type="button"
-                className="w-full bg-card hover:bg-card/80 border border-border text-foreground font-semibold rounded-2xl h-12 transition-all duration-200"
+                className="w-full bg-gradient-to-br from-primary/10 to-accent/10 hover:from-primary/15 hover:to-accent/15 border border-primary/20 text-foreground font-semibold rounded-2xl h-12 smooth-transition shadow-md shadow-primary/10 hover:shadow-primary/20"
               >
                 Create Account
               </Button>
