@@ -1,192 +1,210 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import ReviewButtons from "./review-buttons";
 import type { Vocabulary } from "@/types";
 import { reviewWord } from "@/app/actions/review";
-import { Button } from "@/components/ui/button";
-import { useEffect } from "react";
-
 
 interface Props {
   word: Vocabulary;
   onNext: () => void;
 }
 
-export default function ReviewCard({
-  word,
-  onNext,
-}: Props) {
-    const [message, setMessage] = useState("");
-    
-  const [showAnswer, setShowAnswer] =
-  useState(false);
-
-const [loading, setLoading] =
-  useState(false);
+export default function ReviewCard({ word, onNext }: Props) {
+  const [message, setMessage] = useState("");
+  const [showAnswer, setShowAnswer] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [isFlipped, setIsFlipped] = useState(false);
 
   useEffect(() => {
-  function handleKeyDown(e: KeyboardEvent) {
-    if (loading) return;
+    function handleKeyDown(e: KeyboardEvent) {
+      if (loading) return;
 
-    // Space = reveal answer
-    if (e.code === "Space" && !showAnswer) {
-      e.preventDefault();
-      setShowAnswer(true);
-      return;
+      if (e.code === "Space" && !showAnswer) {
+        e.preventDefault();
+        setIsFlipped(!isFlipped);
+        setShowAnswer(true);
+        return;
+      }
+
+      if (!showAnswer) return;
+
+      switch (e.key) {
+        case "1":
+          handleReview("Again");
+          break;
+        case "2":
+          handleReview("Hard");
+          break;
+        case "3":
+          handleReview("Good");
+          break;
+        case "4":
+          handleReview("Easy");
+          break;
+      }
     }
 
-    if (!showAnswer) return;
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [showAnswer, loading, isFlipped]);
 
-    switch (e.key) {
-      case "1":
-        handleReview("Again");
-        break;
+  async function handleReview(rating: "Again" | "Hard" | "Good" | "Easy") {
+    setLoading(true);
 
-      case "2":
-        handleReview("Hard");
-        break;
+    try {
+      const xpMessages = {
+        Again: "+2 XP",
+        Hard: "+5 XP",
+        Good: "+10 XP",
+        Easy: "+15 XP 🔥",
+      };
 
-      case "3":
-        handleReview("Good");
-        break;
+      setMessage(xpMessages[rating]);
+      await reviewWord(word.id, rating);
 
-      case "4":
-        handleReview("Easy");
-        break;
+      setTimeout(() => {
+        setMessage("");
+        setShowAnswer(false);
+        setIsFlipped(false);
+        onNext();
+      }, 600);
+    } finally {
+      setLoading(false);
     }
   }
 
-  window.addEventListener("keydown", handleKeyDown);
+  const gradients = [
+    "from-blue-600 to-cyan-600",
+    "from-purple-600 to-pink-600",
+    "from-orange-600 to-red-600",
+    "from-green-600 to-emerald-600",
+    "from-yellow-600 to-orange-600",
+  ];
 
-  return () =>
-    window.removeEventListener(
-      "keydown",
-      handleKeyDown
-    );
-}, [showAnswer, loading]);
+  const gradientIndex = word.id % gradients.length;
+  const gradient = gradients[gradientIndex];
 
-  async function handleReview(
-  rating: "Again" | "Hard" | "Good" | "Easy"
-) {
-  setLoading(true);
-
-  try {
-
-    switch (rating) {
-  case "Again":
-    setMessage("+2 XP • Review again soon");
-    break;
-  case "Hard":
-    setMessage("+5 XP");
-    break;
-  case "Good":
-    setMessage("+10 XP");
-    break;
-  case "Easy":
-    setMessage("+15 XP 🔥");
-    break;
-}
-    await reviewWord(word.id, rating);
-
-    setShowAnswer(false);
-
-    setTimeout(() => {
-  setMessage("");
-  setShowAnswer(false);
-  onNext();
-}, 700);
-
-  } finally {
-    setLoading(false);
-  }
-}
   return (
-    <motion.div 
-      className="glass-card rounded-3xl p-12 max-w-3xl mx-auto backdrop-blur-xl border border-white/10"
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.4 }}
-      whileHover={{ boxShadow: "0 20px 40px rgba(124, 58, 237, 0.1)" }}
+      className="w-full max-w-2xl"
     >
-      <motion.p
-        className={`mx-auto text-center text-7xl font-bold transition-all duration-500 ${
-          showAnswer ? "scale-95 opacity-70" : "scale-100 opacity-100"
-        }`}
-        key={`${word.id}-main`}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
+      {/* Main Card */}
+      <motion.div
+        onClick={() => {
+          if (!showAnswer) {
+            setIsFlipped(!isFlipped);
+            setShowAnswer(true);
+          }
+        }}
+        style={{ perspective: 1000 }}
+        className="relative cursor-pointer"
       >
-        {word.japanese_kanji ?? word.japanese_hiragana}
-      </motion.p>
-
-      {!showAnswer ? (
         <motion.div
-          className="mt-8 flex flex-col items-center"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
+          animate={{ rotateY: isFlipped ? 180 : 0 }}
+          transition={{ duration: 0.6, type: "spring", stiffness: 100 }}
+          style={{ transformStyle: "preserve-3d" }}
+          className={`relative w-full aspect-video rounded-3xl border border-white/10 backdrop-blur-xl bg-gradient-to-br ${gradient} bg-opacity-5 p-8 md:p-12 overflow-hidden flex flex-col items-center justify-center`}
         >
-          <p className="text-muted-foreground text-sm font-medium mb-4">Press Space or click to reveal</p>
-          <Button
-            onClick={() => setShowAnswer(true)}
-            size="lg"
-            className="smooth-transition hover:shadow-lg hover:shadow-primary/20"
-          >
-            ␣ Reveal Answer
-          </Button>
-        </motion.div>
-      ) : (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.3 }}
-          className="space-y-6 mt-8"
-        >
-          <motion.p 
-            className="text-center text-2xl font-semibold text-accent"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.1 }}
-          >
-            {word.japanese_hiragana}
-          </motion.p>
+          {/* Animated background glow */}
+          <div className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-5 blur-3xl -z-10`} />
 
-          <motion.div
-            className="text-center space-y-2"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.15 }}
-          >
-            <p className="text-lg text-foreground">Meaning</p>
-            <p className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              {word.english_meaning}
-            </p>
-          </motion.div>
-
-          {message && (
-            <motion.p 
-              className="mt-4 text-center font-semibold text-green-400 text-base"
-              key={message}
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }}
+          {/* Front Side - Japanese */}
+          {!isFlipped && (
+            <motion.div
+              style={{ backfaceVisibility: "hidden" }}
+              className="w-full h-full flex flex-col items-center justify-center z-10"
             >
-              ✨ {message}
-            </motion.p>
+              <motion.p
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: 0.1, duration: 0.4 }}
+                className="text-8xl md:text-9xl font-bold text-foreground text-center leading-tight"
+              >
+                {word.japanese_kanji ?? word.japanese_hiragana}
+              </motion.p>
+
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.3 }}
+                className="mt-6 text-lg text-muted-foreground font-medium"
+              >
+                {word.japanese_hiragana && word.japanese_kanji ? (
+                  <span>
+                    Reading: <span className="text-accent">{word.japanese_hiragana}</span>
+                  </span>
+                ) : null}
+              </motion.p>
+
+              {!showAnswer && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5 }}
+                  className="mt-8 text-center"
+                >
+                  <p className="text-sm text-muted-foreground mb-4">Click or press Space to reveal</p>
+                  <motion.div
+                    animate={{ scale: [1, 1.05, 1] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                    className="inline-block px-6 py-2 rounded-full bg-white/10 border border-white/20"
+                  >
+                    <span className="text-lg">␣</span>
+                  </motion.div>
+                </motion.div>
+              )}
+            </motion.div>
           )}
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-          >
-            <ReviewButtons
-              loading={loading}
-              onRate={handleReview}
-            />
-          </motion.div>
+          {/* Back Side - Answer */}
+          {isFlipped && (
+            <motion.div
+              style={{ backfaceVisibility: "hidden", rotateY: 180 }}
+              className="w-full h-full flex flex-col items-center justify-center z-10"
+            >
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.1 }}
+                className="text-center"
+              >
+                <p className="text-sm text-muted-foreground font-medium mb-4">Meaning</p>
+                <p className="text-6xl md:text-7xl font-bold text-foreground">
+                  {word.english_meaning}
+                </p>
+              </motion.div>
+
+              {message && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-8 text-center"
+                >
+                  <p className="text-xl font-semibold bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
+                    {message}
+                  </p>
+                </motion.div>
+              )}
+            </motion.div>
+          )}
+        </motion.div>
+      </motion.div>
+
+      {/* Answer Buttons */}
+      {showAnswer && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+          className="mt-8"
+        >
+          <ReviewButtons loading={loading} onRate={handleReview} />
         </motion.div>
       )}
     </motion.div>

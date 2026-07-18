@@ -5,54 +5,69 @@ import { Button } from "@/components/ui/button";
 
 interface Props {
   loading?: boolean;
-
-  onRate: (
-    rating: "Again" | "Hard" | "Good" | "Easy"
-  ) => void;
+  onRate: (rating: "Again" | "Hard" | "Good" | "Easy") => void;
 }
 
-export default function ReviewButtons({
-  loading,
-  onRate,
-}: Props) {
+export default function ReviewButtons({ loading, onRate }: Props) {
   const buttons = [
-    { label: "Again", rating: "Again" as const, color: "destructive", emoji: "🔄" },
-    { label: "Hard", rating: "Hard" as const, color: "secondary", emoji: "😰" },
-    { label: "Good", rating: "Good" as const, color: "default", emoji: "✅" },
-    { label: "Easy", rating: "Easy" as const, color: "default", emoji: "🔥" },
+    {
+      label: "Again",
+      rating: "Again" as const,
+      color: "from-red-600 to-pink-600",
+      icon: "↻",
+      description: "1",
+    },
+    {
+      label: "Hard",
+      rating: "Hard" as const,
+      color: "from-orange-600 to-red-600",
+      icon: "⚠",
+      description: "2",
+    },
+    {
+      label: "Good",
+      rating: "Good" as const,
+      color: "from-green-600 to-emerald-600",
+      icon: "✓",
+      description: "3",
+    },
+    {
+      label: "Easy",
+      rating: "Easy" as const,
+      color: "from-blue-600 to-cyan-600",
+      icon: "★",
+      description: "4",
+    },
   ];
 
   return (
-    <motion.div 
-      className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-4"
+    <motion.div
+      className="grid grid-cols-2 md:grid-cols-4 gap-4"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ staggerChildren: 0.05, delayChildren: 0.1 }}
+      transition={{ staggerChildren: 0.08, delayChildren: 0 }}
     >
       {buttons.map((btn, idx) => (
-        <motion.div
+        <motion.button
           key={btn.rating}
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: idx * 0.05 }}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+          transition={{ delay: idx * 0.08 }}
+          whileHover={{ scale: 1.08, y: -2 }}
+          whileTap={{ scale: 0.92 }}
+          onClick={() => !loading && onRate(btn.rating)}
+          disabled={loading}
+          className="group relative px-4 py-4 rounded-2xl font-semibold text-white overflow-hidden disabled:opacity-50 transition-all"
         >
-          <Button
-            variant={btn.rating === "Again" ? "destructive" : btn.rating === "Hard" ? "secondary" : "default"}
-            disabled={loading}
-            onClick={() => onRate(btn.rating)}
-            className={`w-full font-semibold smooth-transition ${
-              btn.rating === "Good" 
-                ? "bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 shadow-lg shadow-green-600/20"
-                : btn.rating === "Easy"
-                ? "bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 shadow-lg shadow-blue-600/20"
-                : ""
-            }`}
-          >
-            {btn.emoji} {btn.label}
-          </Button>
-        </motion.div>
+          <div className={`absolute inset-0 bg-gradient-to-br ${btn.color} shadow-lg transition-all group-hover:shadow-xl group-hover:shadow-current/50`} />
+          <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+
+          <div className="relative z-10 flex flex-col items-center gap-1">
+            <span className="text-2xl">{btn.icon}</span>
+            <span className="text-sm">{btn.label}</span>
+            <span className="text-xs opacity-70">({btn.description})</span>
+          </div>
+        </motion.button>
       ))}
     </motion.div>
   );
