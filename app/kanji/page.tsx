@@ -50,18 +50,7 @@ export default function KanjiPage() {
     )
   }, [search, kanji])
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.03, delayChildren: 0.1 },
-    },
-  }
 
-  const itemVariants = {
-    hidden: { opacity: 0, scale: 0.95 },
-    visible: { opacity: 1, scale: 1, transition: { duration: 0.3 } },
-  }
 
   return (
     <div className="flex-1 overflow-y-auto">
@@ -136,20 +125,18 @@ export default function KanjiPage() {
             />
           </motion.div>
         ) : filtered.length > 0 ? (
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
-          >
-            {filtered.map((k) => (
-              <Link key={k.id} href={`/kanji/${encodeURIComponent(k.kanji)}`}>
-                <motion.div
-                  variants={itemVariants}
-                  whileHover={{ y: -4 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="bg-card border border-border rounded-2xl p-6 cursor-pointer group hover:border-border/60 transition-all"
-                >
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {filtered.map((k, idx) => (
+              <motion.div
+                key={k.id}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: idx * 0.03, duration: 0.3 }}
+                whileHover={{ y: -4 }}
+                whileTap={{ scale: 0.98 }}
+                className="bg-card border border-border rounded-2xl p-6 cursor-pointer group hover:border-border/60 transition-all"
+              >
+                <Link href={`/kanji/${encodeURIComponent(k.kanji)}`} className="block h-full">
                   {/* Kanji Character */}
                   <div className="mb-4">
                     <p className="text-7xl font-light text-primary text-center">{k.kanji}</p>
@@ -187,10 +174,10 @@ export default function KanjiPage() {
                       </div>
                     )}
                   </div>
-                </motion.div>
-              </Link>
+                </Link>
+              </motion.div>
             ))}
-          </motion.div>
+          </div>
         ) : (
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
